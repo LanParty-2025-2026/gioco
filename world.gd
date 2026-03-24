@@ -83,20 +83,9 @@ func crea_server() -> void:
 	enet_peer.create_server(port)
 	multiplayer.multiplayer_peer = enet_peer
 	multiplayer.peer_connected.connect(spawna_client)
-	is_host = true
 
 	$MenuContainer.queue_free()
 	$LevelContainer.queue_free()
-
-	# Aggiunge la camera spettatore: cicla tra i POV dei giocatori ogni 5 secondi
-	var cam = Camera2D.new()
-	cam.set_script(load("res://spectator_camera.gd"))
-	cam.enabled = true
-	add_child(cam)
-	# Passa la label già presente nella scena per mostrare quale giocatore si sta guardando
-	cam.info_label = $Label
-	$Label.z_index = 220
-	$Label.text = "In attesa di giocatori..."
 
 func crea_client() -> void:
 	# Crea un client e lo connette al server
@@ -230,12 +219,12 @@ func aggiornaContatore():
 	if (playerPronti >= n_players):
 		for i in range(1, 2):
 			print("ciao" + str(i))
-			timer.wait_time = 2#5.0  # Durata del livello in secondi
+			timer.wait_time = 10#5.0  # Durata del livello in secondi
 			timer.one_shot = false
 			timer.start()
 			await timer.timeout
 			rpc("start" , "res://Levels/Combattimento1/world/world.tscn")
-			timer.wait_time = 30#45.0  # Durata del livello in secondi
+			timer.wait_time = 10#45.0  # Durata del livello in secondi
 			  # Durata del livello in secondi
 			timer.one_shot = false
 			timer.start()
@@ -252,24 +241,24 @@ func aggiornaContatore():
 			rpc("nascondi_player_locale")
 			
 			rpc("start" , "res://intermezzo.tscn")
-			timer.wait_time = 5#6
+			timer.wait_time = 10#6
 			timer.one_shot = false
 			timer.start()
 			await timer.timeout	
 			rpc("start" , "res://Levels/Livello1/world/world.tscn")
-			timer.wait_time = 70#120.0  # Durata del livello in secondi
+			timer.wait_time = 10#120.0  # Durata del livello in secondi
 			timer.one_shot = false
 			timer.start()
 			await timer.timeout	
 			rpc("start" , "res://intermezzo.tscn")
-			timer.wait_time = 5#6
+			timer.wait_time = 10#6
 			timer.one_shot = false
 			timer.start()
 			await timer.timeout	
 			rpc("mostra_player_locale")
 			rev()
 			rpc("start" , "res://Levels/Combattimento1/world/world.tscn")
-			timer.wait_time = 35.0  # Durata del livello in secondi
+			timer.wait_time = 10.0  # Durata del livello in secondi
 			timer.one_shot = false
 			timer.start()
 			arena = true
@@ -285,26 +274,26 @@ func aggiornaContatore():
 				
 			rpc("nascondi_player_locale")
 			rpc("start" , "res://intermezzo.tscn")
-			timer.wait_time = 5#6
+			timer.wait_time = 10#6
 			timer.one_shot = false
 			timer.start()
 			await timer.timeout	
 			rpc("start" , "res://LivelloChimica/scene/minigiochi.tscn")
 			
-			timer.wait_time = 60.0  # Durata del livello in secondi
+			timer.wait_time = 10.0  # Durata del livello in secondi
 			timer.one_shot = false
 			timer.start()
 			await timer.timeout	
 			#rpc("start" , "res://Levels/LivelloChimica/scene/minigiochi.tscn")
 			rpc("start" , "res://intermezzo.tscn")
-			timer.wait_time = 5#6
+			timer.wait_time = 10#6
 			timer.one_shot = false
 			timer.start()
 			await timer.timeout	
 			rpc("mostra_player_locale")
 			rev()
 			rpc("start" , "res://Levels/Combattimento1/world/world.tscn")
-			timer.wait_time = 40.0  # Durata del livello in secondi
+			timer.wait_time = 10.0  # Durata del livello in secondi
 			timer.one_shot = false
 			timer.start()
 			arena = true
@@ -322,19 +311,19 @@ func aggiornaContatore():
 			
 			rpc("nascondi_player_locale")
 			rpc("start" , "res://intermezzo.tscn")
-			timer.wait_time = 5#6
+			timer.wait_time = 10#6
 			timer.one_shot = false
 			timer.start()
 			await timer.timeout	
 			rpc("start" , "res://Levels/Livello2/World/world.tscn")
-			timer.wait_time = 90#150.0  # Durata del livello in secondi
+			timer.wait_time = 10#150.0  # Durata del livello in secondi
 			timer.one_shot = false
 			timer.start()
 			await timer.timeout	
 			
 			rpc("nuclearizzaTorri")
 			rpc("start" , "res://intermezzo.tscn")
-			timer.wait_time = 5#6
+			timer.wait_time = 10#6
 			timer.one_shot = false
 			timer.start()
 			await timer.timeout	
@@ -376,7 +365,7 @@ func aggiornaContatore():
 			rpc("mostra_player_locale")
 			rev()
 			rpc("start" , "res://Levels/Combattimento1/world/world.tscn")
-			timer.wait_time = 180#50.0  # Durata del livello in secondi
+			timer.wait_time = 10#50.0  # Durata del livello in secondi
 			timer.one_shot = true
 			timer.start()
 			arena = true
@@ -406,7 +395,7 @@ func spawna(pos, rot, damage):
 @rpc 
 func aggiornaPunteggio():
 	print(punteggio)
-	var url = "https://cautious-guide-j6j9xrvj46p2p96-3000.app.github.dev/studente"
+	var url = "http://classifica.gmasiero.it/studente"
 
 	var headers = ["Content-Type: application/json"]
 	var data = {

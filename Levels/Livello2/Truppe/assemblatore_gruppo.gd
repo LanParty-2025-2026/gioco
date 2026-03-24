@@ -13,7 +13,6 @@ extends Node
 
 
 func _ready() -> void:
-	truppa.GruppoAvversario.call()
 	if get_parent().is_in_group("Nemico"):
 		truppa.direction = Vector2(1,0)
 		RayCast.position = posizione_nemico.position
