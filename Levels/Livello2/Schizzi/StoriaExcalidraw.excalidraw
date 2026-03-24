@@ -1,0 +1,51 @@
+{
+  "type": "excalidraw",
+  "version": 2,
+  "source": "https://excalidraw.com",
+  "elements": [
+    {
+      "id": "lDG2uy9ud1xtCLBW4Piad",
+      "type": "text",
+      "x": 431,
+      "y": 223,
+      "width": 124.57992553710938,
+      "height": 25,
+      "angle": 0,
+      "strokeColor": "#e03131",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "bP9",
+      "roundness": null,
+      "seed": 1187453983,
+      "version": 16,
+      "versionNonce": 1788546417,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1733509397355,
+      "link": null,
+      "locked": false,
+      "text": "Gioco Storia",
+      "fontSize": 20,
+      "fontFamily": 5,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "containerId": null,
+      "originalText": "Gioco Storia",
+      "autoResize": true,
+      "lineHeight": 1.25
+    }
+  ],
+  "appState": {
+    "gridSize": 20,
+    "gridStep": 5,
+    "gridModeEnabled": false,
+    "viewBackgroundColor": "#ffffff"
+  },
+  "files": {}
+}

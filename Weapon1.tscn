@@ -1,0 +1,26 @@
+[gd_scene load_steps=5 format=3 uid="uid://cpdbp327qk4ey"]
+
+[ext_resource type="Texture2D" uid="uid://b71d0f5oewmwx" path="res://Textures/spada.png" id="1_kyxjc"]
+[ext_resource type="Script" path="res://weapon_1.gd" id="2_ulixx"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_kmj31"]
+size = Vector2(28.4226, 472.582)
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_4jofj"]
+
+[node name="Weapon1" type="Sprite2D"]
+position = Vector2(77, 1.13687e-13)
+rotation = 1.5708
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("1_kyxjc")
+script = ExtResource("2_ulixx")
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(-7.15254e-06, -130)
+scale = Vector2(6.33297, 1.4389)
+shape = SubResource("RectangleShape2D_kmj31")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_4jofj")

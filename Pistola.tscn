@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://cf7pm7fi6lleq"]
+
+[ext_resource type="Texture2D" uid="uid://kvpjj5qci3c7" path="res://Textures/pistola.png" id="1_mqpq8"]
+[ext_resource type="Script" path="res://weapon_2.gd" id="2_xxrw8"]
+
+[node name="Weapon2" type="Sprite2D"]
+position = Vector2(64, 9)
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("1_mqpq8")
+flip_h = true
+script = ExtResource("2_xxrw8")
+
+[node name="puntoSparo" type="Node2D" parent="."]
+position = Vector2(318.333, -155)

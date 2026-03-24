@@ -1,0 +1,23 @@
+[gd_scene load_steps=2 format=3 uid="uid://ysckm8egy5b1"]
+
+[ext_resource type="Script" path="res://selettore_arma.gd" id="1_o3fcj"]
+
+[node name="selettoreArma" type="Node2D"]
+script = ExtResource("1_o3fcj")
+
+[node name="Button" type="Button" parent="."]
+offset_left = 182.0
+offset_top = 268.0
+offset_right = 355.0
+offset_bottom = 338.0
+text = "Mischia"
+
+[node name="Button2" type="Button" parent="."]
+offset_left = 823.0
+offset_top = 271.0
+offset_right = 996.0
+offset_bottom = 341.0
+text = "Distanza"
+
+[connection signal="button_down" from="Button" to="." method="_on_button_button_down"]
+[connection signal="button_down" from="Button2" to="." method="_on_button_2_button_down"]

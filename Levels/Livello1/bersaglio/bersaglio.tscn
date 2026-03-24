@@ -1,0 +1,141 @@
+[gd_scene load_steps=18 format=3 uid="uid://dq4drko6yx7oy"]
+
+[ext_resource type="Script" path="res://Levels/Livello1/bersaglio/bersaglio.gd" id="1_ahdug"]
+[ext_resource type="Texture2D" uid="uid://cph3ogdblskql" path="res://Levels/Livello1/bersaglio/arco_sprite-Sheet.png" id="2_4k1nj"]
+[ext_resource type="Shader" path="res://Levels/Livello1/bersaglio/bersaglio.gdshader" id="2_jfufy"]
+[ext_resource type="Texture2D" uid="uid://c0g0pg17stjft" path="res://Levels/Livello1/bersaglio/freccia_sprite.png" id="3_j4sbx"]
+[ext_resource type="AudioStream" uid="uid://dpvdmg716b63d" path="res://Levels/Livello1/Sound/arrow-wood-impact-146418.mp3" id="5_hroyv"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_p25wp"]
+shader = ExtResource("2_jfufy")
+shader_parameter/flash_color = Color(1, 1, 1, 1)
+shader_parameter/flash_value = null
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yr1xb"]
+atlas = ExtResource("2_4k1nj")
+region = Rect2(0, 0, 65, 25)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gu8xe"]
+atlas = ExtResource("2_4k1nj")
+region = Rect2(65, 0, 65, 25)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_c5w3g"]
+atlas = ExtResource("2_4k1nj")
+region = Rect2(130, 0, 65, 25)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_i8kg5"]
+atlas = ExtResource("2_4k1nj")
+region = Rect2(195, 0, 65, 25)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ti6ac"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yr1xb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gu8xe")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_c5w3g")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_i8kg5")
+}],
+"loop": false,
+"name": &"default",
+"speed": 12.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_i1m11"]
+radius = 70.0286
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_x8vfm"]
+bg_color = Color(1, 0, 0.32549, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_blhms"]
+bg_color = Color(1.05888e-06, 0.72836, 0.0269324, 1)
+
+[sub_resource type="Animation" id="Animation_x1nr6"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:material:shader_parameter/flash_value")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [null]
+}
+
+[sub_resource type="Animation" id="Animation_qcomy"]
+resource_name = "flash"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:material:shader_parameter/flash_value")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.266667, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [null, 1.0, 0.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_hr010"]
+_data = {
+"RESET": SubResource("Animation_x1nr6"),
+"flash": SubResource("Animation_qcomy")
+}
+
+[node name="Bersaglio" type="Area2D"]
+collision_layer = 3
+collision_mask = 3
+script = ExtResource("1_ahdug")
+
+[node name="Sprite2D" type="AnimatedSprite2D" parent="."]
+z_index = 10
+material = SubResource("ShaderMaterial_p25wp")
+scale = Vector2(2.135, 2.135)
+sprite_frames = SubResource("SpriteFrames_ti6ac")
+frame = 3
+frame_progress = 1.0
+metadata/_edit_lock_ = true
+
+[node name="Sprite2D2" type="Sprite2D" parent="."]
+z_index = 9
+position = Vector2(-3, -4)
+rotation = -0.785398
+scale = Vector2(2.54895, 2.36041)
+texture = ExtResource("3_j4sbx")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_i1m11")
+metadata/_edit_lock_ = true
+
+[node name="ProgressBar" type="ProgressBar" parent="."]
+offset_left = -64.0
+offset_top = 67.0
+offset_right = 64.0
+offset_bottom = 94.0
+theme_override_styles/background = SubResource("StyleBoxFlat_x8vfm")
+theme_override_styles/fill = SubResource("StyleBoxFlat_blhms")
+value = 100.0
+show_percentage = false
+
+[node name="flash" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_hr010")
+}
+
+[node name="Danno" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_hroyv")
+volume_db = -9.163
+pitch_scale = 0.55
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

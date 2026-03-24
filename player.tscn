@@ -1,0 +1,747 @@
+[gd_scene load_steps=63 format=3 uid="uid://nae1375nhcnl"]
+
+[ext_resource type="Texture2D" uid="uid://6p1l01covcub" path="res://Textures/pers1.png" id="1_4pvc6"]
+[ext_resource type="Texture2D" uid="uid://dlbi6tkp73a36" path="res://Textures/damage1.png" id="1_wqulw"]
+[ext_resource type="Texture2D" uid="uid://jfvdadrhhxys" path="res://Textures/damage3.png" id="2_xi5d8"]
+[ext_resource type="Texture2D" uid="uid://cmt76wtwph5wk" path="res://Textures/damage2.png" id="3_tti1t"]
+[ext_resource type="Texture2D" uid="uid://blrukm3pcqck5" path="res://Textures/damage4.png" id="4_h6qdk"]
+[ext_resource type="Texture2D" uid="uid://chnbfr27ctqd0" path="res://Textures/spMINI04-fall-Sheet.png" id="5_5om74"]
+[ext_resource type="Texture2D" uid="uid://dqvbb11e0uei2" path="res://Textures/pers2.png" id="6_ak4s3"]
+[ext_resource type="Texture2D" uid="uid://dcb41m7j8gd5g" path="res://Textures/spMINI04-dead.png" id="6_hgqle"]
+[ext_resource type="Texture2D" uid="uid://dfy8p1s46wi78" path="res://Textures/pers3.png" id="7_5b2lp"]
+[ext_resource type="Texture2D" uid="uid://bpx0h6tn1tqjj" path="res://Textures/spMINI02-fall-Sheet.png" id="7_itd41"]
+[ext_resource type="Texture2D" uid="uid://c1u3em0rjsn2e" path="res://Textures/spMINI02-dead.png" id="8_1d6dw"]
+[ext_resource type="Texture2D" uid="uid://bp1jtobe0wrqr" path="res://Textures/pers4.png" id="8_8r6jd"]
+[ext_resource type="Texture2D" uid="uid://c7soq7iimg18g" path="res://Textures/spMINI01-fall-Sheet.png" id="9_u7ck2"]
+[ext_resource type="Texture2D" uid="uid://bmmfvy74fsejw" path="res://Textures/spMINI01-dead.png" id="10_18rrs"]
+[ext_resource type="Texture2D" uid="uid://b8lffutu4avpb" path="res://Textures/spMINI03-fall-Sheet.png" id="11_20loy"]
+[ext_resource type="Texture2D" uid="uid://dbeikms2ymx4t" path="res://Textures/spMINI03-dead.png" id="12_k7hq2"]
+
+[sub_resource type="GDScript" id="GDScript_2ruc6"]
+script/source = "extends CharacterBody2D
+@onready var hitbox = $CollisionShape2D  # L'Area2D per la collisione
+
+@export var speed = 200
+@onready var animation = $AnimatedSprite2D
+@onready var weapon = $weapon
+@onready var proiettile = load(\"res://proiettile.tscn\")
+@onready var puntoSparo
+@onready var username = $username
+
+var dead = false
+
+var vita = 5
+
+var punteggio = 0
+# = weapon.get_child(0).puntoSparo
+var personaggio = \"1\"
+var enabled = true
+
+const SPEED = 300.0
+const RADIUS = 30  # Distanza fissa tra player e arma
+const ATTACK_ROTATION = deg_to_rad(70)  # Invece di 45
+var attack_direction_right = true  # Parte da sinistra a destra
+
+const ATTACK_TIME = 0.3  # Tempo di rotazione (secondi)
+
+var damaging = false
+var angle = 0  # Angolo iniziale dell'arma
+var attacking = false  # Stato di attacco
+var attack_timer = 0.0  # Timer per l'animazione dell'attacco
+var attack_phase = 0  # 0 = no attacco, 1 = rotazione sinistra, 2 = rotazione destra
+
+var arma
+
+func _enter_tree() -> void:
+	#quando entra nel world allora
+	set_multiplayer_authority(str(name).to_int())
+	if is_multiplayer_authority():
+		position.x = 600
+		position.y = 324
+		hide()
+		
+	#print(\"passo1\")
+func _ready() -> void:
+	if is_multiplayer_authority():
+		z_index = 150
+		var mouse_pos = get_global_mouse_position()
+		angle = (mouse_pos - global_position).angle()
+		username.text = get_parent().username
+		
+		update_weapon_position()
+		$Timer.wait_time = 0.1
+		$Timer.start()
+		await $Timer.timeout
+		get_parent().rpc_id(1, \"aggiornaListaServer\")
+
+func addPunti(punti):
+	if is_multiplayer_authority():
+		punteggio = punteggio + punti
+		get_parent().addPunti(punti)
+	else:
+		rpc(\"addPuntiGlobal\", punti)
+
+@rpc(\"any_peer\")
+func addPuntiGlobal(punti):
+	if is_multiplayer_authority():
+		punteggio = punteggio + punti
+		get_parent().addPunti(punti)
+
+func nameColor():
+	if personaggio == \"1\":
+		username.add_theme_color_override(\"font_color\", Color(\"blue\"))
+	elif personaggio == \"2\":
+		username.add_theme_color_override(\"font_color\", Color(\"red\"))
+	elif personaggio == \"3\":
+		username.add_theme_color_override(\"font_color\", Color(\"green\"))
+	else:
+		username.add_theme_color_override(\"font_color\", Color(\"orange\"))
+	#print(\"passo2\")
+func _physics_process(delta: float) -> void:
+	# questo controllo va fatto in ogni funzione dove bisogna controllare se chi ha fatto un input/aggiornamento è il proprietario dell'istanza
+	if not is_multiplayer_authority() or !enabled or dead: return
+	
+	var variabile:Vector2 = Vector2(
+		Input.get_axis(\"sinistra\",\"destra\"),
+		Input.get_axis(\"su\",\"giu\")
+			) 
+	if (variabile.x != 0 or variabile.y != 0) and !damaging:
+		variabile = variabile.normalized()
+		position += variabile * speed * delta
+		move_and_slide()
+		animation.play(\"walk\"+personaggio)
+		if variabile.x < 0:
+			animation.flip_h = false
+		elif variabile.x > 0:
+			animation.flip_h = true
+	elif !damaging:
+		animation.play(\"idle\"+personaggio)
+	#print(\"passo5\")	
+	if arma != null:
+		call(\"attacco\"+arma, delta)
+func _on_timer_timeout() -> void:
+	if not is_multiplayer_authority(): return
+	damaging = false
+	# Controlla se il corpo sta collidendo con altri oggetti
+func attaccoCorpo(delta):
+	if Input.is_action_just_pressed(\"attacco\") and not attacking:
+			attacking = true
+			weapon.get_child(0).isAttacking = true
+			attack_timer = ATTACK_TIME
+
+	if attacking:
+		attack_timer -= delta
+
+		var from_angle = 0.0
+		var to_angle = 0.0
+
+		if attack_direction_right:
+			from_angle = angle - ATTACK_ROTATION
+			to_angle = angle + ATTACK_ROTATION
+		else:
+			from_angle = angle + ATTACK_ROTATION
+			to_angle = angle - ATTACK_ROTATION
+		
+		var t = 1.0 - attack_timer / ATTACK_TIME
+		weapon.rotation = lerp_angle(from_angle, to_angle, t)
+
+		if attack_timer <= 0:
+			attacking = false
+			weapon.get_child(0).isAttacking = false
+			attack_direction_right = !attack_direction_right  # Inverti la direzione per il prossimo attacco
+			update_weapon_position()
+		# Aggiorna la posizione e rotazione dell'arma
+	if !attacking: 
+		update_weapon_position()
+
+func update_weapon_position():
+	if DisplayServer.window_is_focused():
+		# Ottieni l'angolo attuale tra il player e il mouse
+		var mouse_pos = get_global_mouse_position()
+		angle = (mouse_pos - global_position).angle()
+
+		# Calcola la posizione dell'arma sulla circonferenza
+		var weapon_pos = global_position + Vector2(RADIUS * cos(angle), RADIUS * sin(angle))
+		weapon.global_position = weapon_pos
+
+		# Se non stiamo attaccando, l'arma ruota normalmente seguendo il mouse
+		if not attacking:
+			weapon.rotation = angle
+
+func attaccoDistanza( delta):
+	if Input.is_action_just_pressed(\"attacco\") and not attacking:
+			attacking = true
+			#weapon.isAttacking = true
+			attack_timer = ATTACK_TIME
+
+	if attacking:
+		attack_timer -= delta
+		#var proj = proiettile.instantiate()
+		#get_tree().current_scene.add_child(proj)
+		#add_child(proj)
+		
+		puntoSparo = weapon.get_child(0).get_child(0)
+		#proj.position.y = puntoSparo.global_position.y
+		#proj.position.x = puntoSparo.global_position.x
+		#proj.rotation = weapon.rotation
+		#var forward = Vector2.RIGHT.rotated(proj.rotation).normalized()
+		#proj.velocity = forward * 800
+		#weapon.add_child(proj, true)
+		get_parent().spawna(puntoSparo.global_position, weapon.rotation, weapon.get_child(0).damage)
+		#print(proj.velocity)
+
+		attacking = false
+		update_weapon_position()
+		# Aggiorna la posizione e rotazione dell'arma
+	if !attacking: 
+		update_weapon_position()
+
+func _on_area_2d_area_entered(area: Area2D) -> void:
+	if is_multiplayer_authority():
+		if area.name == \"nemico\":
+			damage(area)
+			print(\"fottuto\")
+	elif area.name == \"nemico\":
+		rpc(\"sonoilPlayer\", area.global_position)
+
+@rpc(\"any_peer\")
+func sonoilPlayer(pos):
+	if is_multiplayer_authority():
+		damage2(pos)
+	
+func damage(area: Area2D):
+	damaging = true
+	$Timer.start()
+	animation.play(\"damage\"+personaggio)
+	var knock = (global_position - area.global_position).normalized()
+	#velocity = knock * 100
+	
+	var tween = get_tree().create_tween()
+	if position.x + knock.x < 10 or position.x + knock.x  > 1190:
+		knock.x = 0
+	if  position.y + knock.y < 10 or position.y + knock.y > 638:
+		knock.y = 0
+		
+	tween.tween_property(self, \"position\", position + knock, 0.1)
+	move_and_slide()
+
+
+func damage2(pos):
+	if dead:
+		return
+	vita = vita - 1
+	if !dead and vita > 0:
+		damaging = true
+		$Timer.wait_time = 0.3
+		$Timer.start()
+		animation.play(\"damage\"+personaggio)
+		var knock = (global_position - pos).normalized()
+		#velocity = knock * 100
+		if position.x + knock.x < 200 or position.x + knock.x  > 1000:
+			knock.x = 0
+		if  position.y + knock.y < 100 or position.y + knock.y > 548:
+			knock.y = 0
+		var tween = get_tree().create_tween()
+		tween.tween_property(self, \"position\", position + knock*100, 0.1)
+		move_and_slide()
+	else:
+		dead = true
+		$Timer.wait_time = 0.67
+		$Timer.start()
+		animation.play(\"death\"+personaggio)
+		await $Timer.timeout
+		print(\"morto\")
+		rpc_id(1, \"isDead\")
+		hide()
+		get_parent().load_level(\"res://morte.tscn\")
+		
+@rpc(\"any_peer\")
+func isDead():
+	dead = true
+	
+	
+@rpc(\"any_peer\")
+func revive():
+	dead = false
+	vita = 5
+	
+func reviveSr():
+	rpc(\"revive\")
+"
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_82mki"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+properties/2/path = NodePath("AnimatedSprite2D:frame")
+properties/2/spawn = true
+properties/2/replication_mode = 1
+properties/3/path = NodePath("AnimatedSprite2D:animation")
+properties/3/spawn = true
+properties/3/replication_mode = 1
+properties/4/path = NodePath("AnimatedSprite2D:flip_h")
+properties/4/spawn = true
+properties/4/replication_mode = 2
+properties/5/path = NodePath(".:visible")
+properties/5/spawn = true
+properties/5/replication_mode = 1
+properties/6/path = NodePath("weapon:position")
+properties/6/spawn = true
+properties/6/replication_mode = 1
+properties/7/path = NodePath("weapon:rotation")
+properties/7/spawn = true
+properties/7/replication_mode = 1
+properties/8/path = NodePath("username:text")
+properties/8/spawn = true
+properties/8/replication_mode = 2
+properties/9/path = NodePath("username:theme_override_colors/font_color")
+properties/9/spawn = true
+properties/9/replication_mode = 2
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_piv1s"]
+atlas = ExtResource("1_wqulw")
+region = Rect2(0, 0, 40, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ywoqt"]
+atlas = ExtResource("1_wqulw")
+region = Rect2(40, 0, 40, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r320c"]
+atlas = ExtResource("1_wqulw")
+region = Rect2(80, 0, 40, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sd2f6"]
+atlas = ExtResource("1_wqulw")
+region = Rect2(120, 0, 40, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6ghn6"]
+atlas = ExtResource("2_xi5d8")
+region = Rect2(0, 0, 40, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ipmyq"]
+atlas = ExtResource("2_xi5d8")
+region = Rect2(40, 0, 40, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r54wf"]
+atlas = ExtResource("2_xi5d8")
+region = Rect2(80, 0, 40, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0jh7f"]
+atlas = ExtResource("2_xi5d8")
+region = Rect2(120, 0, 40, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ukas7"]
+atlas = ExtResource("3_tti1t")
+region = Rect2(0, 0, 40, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qnkjp"]
+atlas = ExtResource("3_tti1t")
+region = Rect2(40, 0, 40, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fmx7q"]
+atlas = ExtResource("3_tti1t")
+region = Rect2(80, 0, 40, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_k7lh4"]
+atlas = ExtResource("3_tti1t")
+region = Rect2(120, 0, 40, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_redb6"]
+atlas = ExtResource("4_h6qdk")
+region = Rect2(0, 0, 40, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_x0dd5"]
+atlas = ExtResource("4_h6qdk")
+region = Rect2(40, 0, 40, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_de3sl"]
+atlas = ExtResource("4_h6qdk")
+region = Rect2(80, 0, 40, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_l6nna"]
+atlas = ExtResource("4_h6qdk")
+region = Rect2(120, 0, 40, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gexlb"]
+atlas = ExtResource("5_5om74")
+region = Rect2(0, 0, 44, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_u6vos"]
+atlas = ExtResource("5_5om74")
+region = Rect2(44, 0, 44, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gw4kn"]
+atlas = ExtResource("5_5om74")
+region = Rect2(88, 0, 44, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_t8k7e"]
+atlas = ExtResource("7_itd41")
+region = Rect2(0, 0, 44, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_14vuk"]
+atlas = ExtResource("7_itd41")
+region = Rect2(44, 0, 44, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_28n4o"]
+atlas = ExtResource("7_itd41")
+region = Rect2(88, 0, 44, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qsl7n"]
+atlas = ExtResource("9_u7ck2")
+region = Rect2(0, 0, 44, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0digb"]
+atlas = ExtResource("9_u7ck2")
+region = Rect2(44, 0, 44, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kk6ab"]
+atlas = ExtResource("9_u7ck2")
+region = Rect2(88, 0, 44, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f3t1k"]
+atlas = ExtResource("10_18rrs")
+region = Rect2(0, 0, 40, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nfe8p"]
+atlas = ExtResource("11_20loy")
+region = Rect2(0, 0, 44, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xjyx6"]
+atlas = ExtResource("11_20loy")
+region = Rect2(44, 0, 44, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2c4dd"]
+atlas = ExtResource("11_20loy")
+region = Rect2(88, 0, 44, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7tp3x"]
+atlas = ExtResource("1_4pvc6")
+region = Rect2(0, 0, 40, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tg00u"]
+atlas = ExtResource("6_ak4s3")
+region = Rect2(0, 0, 40, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rkkfg"]
+atlas = ExtResource("7_5b2lp")
+region = Rect2(0, 0, 40, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rjw5q"]
+atlas = ExtResource("8_8r6jd")
+region = Rect2(0, 0, 40, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_id6yr"]
+atlas = ExtResource("1_4pvc6")
+region = Rect2(40, 0, 40, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7w7xt"]
+atlas = ExtResource("1_4pvc6")
+region = Rect2(80, 0, 40, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lqbgq"]
+atlas = ExtResource("6_ak4s3")
+region = Rect2(40, 0, 40, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_prvc2"]
+atlas = ExtResource("6_ak4s3")
+region = Rect2(80, 0, 40, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_i1edh"]
+atlas = ExtResource("7_5b2lp")
+region = Rect2(40, 0, 40, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ql344"]
+atlas = ExtResource("7_5b2lp")
+region = Rect2(80, 0, 40, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ngsth"]
+atlas = ExtResource("8_8r6jd")
+region = Rect2(40, 0, 40, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qfn0k"]
+atlas = ExtResource("8_8r6jd")
+region = Rect2(80, 0, 40, 40)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_6oy47"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_piv1s")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ywoqt")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r320c")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sd2f6")
+}],
+"loop": true,
+"name": &"damage1",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6ghn6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ipmyq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r54wf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0jh7f")
+}],
+"loop": true,
+"name": &"damage2",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ukas7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qnkjp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fmx7q")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_k7lh4")
+}],
+"loop": true,
+"name": &"damage3",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_redb6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_x0dd5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_de3sl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_l6nna")
+}],
+"loop": true,
+"name": &"damage4",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gexlb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_u6vos")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gw4kn")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_hgqle")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_hgqle")
+}],
+"loop": true,
+"name": &"death1",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_t8k7e")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_14vuk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_28n4o")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_1d6dw")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_1d6dw")
+}],
+"loop": true,
+"name": &"death2",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qsl7n")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0digb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kk6ab")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_f3t1k")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_f3t1k")
+}],
+"loop": true,
+"name": &"death3",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nfe8p")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xjyx6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2c4dd")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_k7hq2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_k7hq2")
+}],
+"loop": true,
+"name": &"death4",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7tp3x")
+}],
+"loop": true,
+"name": &"idle1",
+"speed": 11.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tg00u")
+}],
+"loop": true,
+"name": &"idle2",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rkkfg")
+}],
+"loop": true,
+"name": &"idle3",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rjw5q")
+}],
+"loop": true,
+"name": &"idle4",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_id6yr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7w7xt")
+}],
+"loop": true,
+"name": &"walk1",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lqbgq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_prvc2")
+}],
+"loop": true,
+"name": &"walk2",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_i1edh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ql344")
+}],
+"loop": true,
+"name": &"walk3",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ngsth")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qfn0k")
+}],
+"loop": true,
+"name": &"walk4",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4ltia"]
+size = Vector2(54, 10)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fv1g3"]
+size = Vector2(54, 76)
+
+[node name="Player" type="CharacterBody2D"]
+position = Vector2(25, 37)
+collision_layer = 2
+script = SubResource("GDScript_2ruc6")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.3
+autostart = true
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_82mki")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(2, 0)
+scale = Vector2(2, 2)
+sprite_frames = SubResource("SpriteFrames_6oy47")
+animation = &"death4"
+frame = 2
+frame_progress = 0.196288
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(1, 35)
+shape = SubResource("RectangleShape2D_4ltia")
+
+[node name="Area2D" type="Area2D" parent="CollisionShape2D"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CollisionShape2D/Area2D"]
+position = Vector2(0, -33)
+shape = SubResource("RectangleShape2D_fv1g3")
+
+[node name="weapon" type="Node2D" parent="."]
+position = Vector2(1, -7)
+
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("res://Weapon1.tscn", "res://Weapon2.tscn", "res://Barrett.tscn", "res://Pistola.tscn")
+spawn_path = NodePath("../weapon")
+
+[node name="username" type="Label" parent="."]
+offset_left = -52.0
+offset_top = -65.0
+offset_right = 59.0
+offset_bottom = -42.0
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[connection signal="area_entered" from="CollisionShape2D/Area2D" to="." method="_on_area_2d_area_entered"]

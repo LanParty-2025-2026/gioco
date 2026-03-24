@@ -1,0 +1,54 @@
+[gd_scene load_steps=3 format=3 uid="uid://bymg13fg84fvy"]
+
+[ext_resource type="Script" path="res://world.gd" id="1_y57qh"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_71sqo"]
+bg_color = Color(0.25069, 0.417258, 0.537421, 1)
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+anti_aliasing_size = 4.915
+
+[node name="World" type="Node2D"]
+script = ExtResource("1_y57qh")
+
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("res://player.tscn", "res://proiettile.tscn", "res://enemy.tscn", "res://boss.tscn")
+spawn_path = NodePath("..")
+
+[node name="Timer" type="Timer" parent="."]
+
+[node name="Timer2" type="Timer" parent="."]
+
+[node name="HTTPRequest" type="HTTPRequest" parent="."]
+
+[node name="Label" type="Label" parent="."]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = 545.0
+offset_top = 31.0
+offset_right = 656.0
+offset_bottom = 76.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = SubResource("StyleBoxFlat_71sqo")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="LevelContainer" type="Node2D" parent="."]
+
+[node name="MenuContainer" type="Node2D" parent="."]
+
+[node name="Punteggio" type="Label" parent="."]
+offset_left = 831.0
+offset_top = 30.0
+offset_right = 1143.0
+offset_bottom = 75.0
+
+[node name="Vita" type="Label" parent="."]
+offset_left = 815.0
+offset_top = 78.0
+offset_right = 1077.0
+offset_bottom = 120.0

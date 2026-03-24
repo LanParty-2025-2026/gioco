@@ -1,0 +1,27 @@
+[gd_scene load_steps=4 format=3 uid="uid://dn1viqrgtvoa0"]
+
+[ext_resource type="Script" path="res://Levels/Livello2/torri/torre.gd" id="1_1h6gk"]
+[ext_resource type="Texture2D" uid="uid://cdgxfq37g00xl" path="res://Levels/Livello2/torri/Sprite_TowerBLUE.png" id="2_ixshs"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4q6hr"]
+size = Vector2(131, 225)
+
+[node name="Torre" type="StaticBody2D"]
+script = ExtResource("1_1h6gk")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(5, -13)
+scale = Vector2(2.95125, 2.95124)
+texture = ExtResource("2_ixshs")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(6.5, -14.5)
+shape = SubResource("RectangleShape2D_4q6hr")
+
+[node name="vita" type="Label" parent="."]
+offset_left = -13.0
+offset_top = -151.0
+offset_right = 27.0
+offset_bottom = -137.0
+text = "Vita"
+horizontal_alignment = 1

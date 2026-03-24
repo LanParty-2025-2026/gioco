@@ -1,0 +1,216 @@
+[gd_scene load_steps=23 format=3 uid="uid://ctl0vvfcd3bg7"]
+
+[ext_resource type="Script" path="res://Levels/Livello1/Bozze/Cavalieri/cavaliere.gd" id="1_shwl3"]
+[ext_resource type="Shader" path="res://Levels/Livello1/Bozze/Cavalieri/cavaliere.gdshader" id="2_d5inn"]
+[ext_resource type="Texture2D" uid="uid://cplkekgpciygk" path="res://Levels/Livello1/AssetsNemici/SwordFighter_LongHair_Blue1.png" id="2_mn6hv"]
+[ext_resource type="Script" path="res://Levels/Livello1/Bozze/Cavalieri/genera_espressione.gd" id="3_shj2x"]
+[ext_resource type="AudioStream" uid="uid://bhylhky4pcq55" path="res://Levels/Livello1/Sound/walk.mp3" id="4_14edp"]
+[ext_resource type="AudioStream" uid="uid://dpvdmg716b63d" path="res://Levels/Livello1/Sound/arrow-wood-impact-146418.mp3" id="4_skdoa"]
+[ext_resource type="AudioStream" uid="uid://qkb4giy7xarc" path="res://Levels/Livello1/Sound/spawn.mp3" id="5_tnidm"]
+[ext_resource type="AudioStream" uid="uid://cuyg7pta8iq6e" path="res://Levels/Livello1/Sound/death.mp3" id="8_2k4av"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_s0dld"]
+radius = 9.48683
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_g54jk"]
+resource_local_to_scene = true
+shader = ExtResource("2_d5inn")
+shader_parameter/flash_color = Color(1, 1, 1, 1)
+shader_parameter/flash_value = 0.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jpdr1"]
+atlas = ExtResource("2_mn6hv")
+region = Rect2(0, 256, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_otj6v"]
+atlas = ExtResource("2_mn6hv")
+region = Rect2(32, 256, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cqwmn"]
+atlas = ExtResource("2_mn6hv")
+region = Rect2(64, 256, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wsfrj"]
+atlas = ExtResource("2_mn6hv")
+region = Rect2(96, 256, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3jgu3"]
+atlas = ExtResource("2_mn6hv")
+region = Rect2(0, 192, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_65kl5"]
+atlas = ExtResource("2_mn6hv")
+region = Rect2(32, 192, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8hjlp"]
+atlas = ExtResource("2_mn6hv")
+region = Rect2(64, 192, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_u5g1o"]
+atlas = ExtResource("2_mn6hv")
+region = Rect2(96, 192, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_0vuyo"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jpdr1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_otj6v")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cqwmn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wsfrj")
+}],
+"loop": false,
+"name": &"death",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3jgu3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_65kl5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8hjlp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_u5g1o")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 5.0
+}]
+
+[sub_resource type="Animation" id="Animation_mxfce"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:material:shader_parameter/flash_value")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_4g05a"]
+resource_name = "flash"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:material:shader_parameter/flash_value")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.466667),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0.0, 1.0, 0.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_odxtm"]
+_data = {
+"RESET": SubResource("Animation_mxfce"),
+"flash": SubResource("Animation_4g05a")
+}
+
+[node name="Cavaliere" type="CharacterBody2D" groups=["nemico"]]
+scale = Vector2(1.64, 1.64)
+collision_layer = 2
+motion_mode = 1
+wall_min_slide_angle = 0.0
+script = ExtResource("1_shwl3")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_s0dld")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+material = SubResource("ShaderMaterial_g54jk")
+sprite_frames = SubResource("SpriteFrames_0vuyo")
+animation = &"death"
+autoplay = "walk"
+frame = 3
+frame_progress = 1.0
+
+[node name="GeneraEspressione" type="Node" parent="."]
+script = ExtResource("3_shj2x")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Espressione" type="Label" parent="Control"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -16.0
+offset_right = 16.0
+offset_bottom = 11.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 10
+text = "1+1=3"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Risultato" type="Label" parent="Control"]
+visible = false
+layout_mode = 0
+offset_left = -20.1219
+offset_top = 9.7561
+offset_right = 19.8781
+offset_bottom = 32.7561
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
+path_postprocessing = 1
+
+[node name="sounds" type="Node" parent="."]
+
+[node name="morte" type="AudioStreamPlayer" parent="sounds"]
+stream = ExtResource("4_skdoa")
+volume_db = -10.537
+pitch_scale = 1.7
+
+[node name="scream" type="AudioStreamPlayer" parent="sounds"]
+stream = ExtResource("5_tnidm")
+volume_db = -5.04
+pitch_scale = 0.86
+
+[node name="walk" type="AudioStreamPlayer" parent="sounds"]
+stream = ExtResource("4_14edp")
+
+[node name="arrive" type="AudioStreamPlayer" parent="sounds"]
+stream = ExtResource("8_2k4av")
+volume_db = -1.305
+pitch_scale = 0.87
+
+[node name="soundeffect" type="Timer" parent="sounds"]
+wait_time = 2.5
+autostart = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_odxtm")
+}
+
+[connection signal="timeout" from="sounds/soundeffect" to="." method="_on_soundeffect_timeout"]

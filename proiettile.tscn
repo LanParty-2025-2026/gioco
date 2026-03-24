@@ -1,0 +1,48 @@
+[gd_scene load_steps=7 format=3 uid="uid://cfotjdbppsy0i"]
+
+[ext_resource type="Script" path="res://proiettile.gd" id="1_ahkft"]
+[ext_resource type="Texture2D" uid="uid://c8fhcy1mm2pya" path="res://Textures/proiettile2.png" id="2_xnn8q"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_m4mpm"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_u86k5"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_benqt"]
+size = Vector2(20, 12)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_4vyqv"]
+
+[node name="Proiettile" type="CharacterBody2D"]
+script = ExtResource("1_ahkft")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_m4mpm")
+disabled = true
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_u86k5")
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_benqt")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(2.38419e-07, 8.9407e-07)
+scale = Vector2(2.22222, 2.22222)
+texture = SubResource("CompressedTexture2D_4vyqv")
+
+[node name="Proiettile2" type="Sprite2D" parent="."]
+position = Vector2(1, 0)
+scale = Vector2(0.027, 0.027)
+texture = ExtResource("2_xnn8q")
+
+[node name="Timer" type="Timer" parent="."]
+
+[connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]

@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://b08ha645y0emf"
+path="res://.godot/imported/dungeon combact (1).mp3-5f6a65b2b5287634e10343f1b3a9d9d0.mp3str"
+
+[deps]
+
+source_file="res://Levels/Livello1/Music/dungeon combact (1).mp3"
+dest_files=["res://.godot/imported/dungeon combact (1).mp3-5f6a65b2b5287634e10343f1b3a9d9d0.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

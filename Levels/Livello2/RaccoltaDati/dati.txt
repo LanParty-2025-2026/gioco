@@ -1,0 +1,106 @@
+-------------------------
+tempo: 1:02
+vittoria: Alleato
+truppe totali posizionate dal giocatore: 10
+truppe totali posizionate dal nemico: 14
+stato potenziamento Production: 1
+stato potenziamento Capacity: 0
+monete_cadute: 47
+monete_raccolte: 45
+-------------------------
+-------------------------
+tempo: 2:12
+vittoria: Nemico
+truppe totali posizionate dal giocatore: 18
+truppe totali posizionate dal nemico: 30
+stato potenziamento Production: 1
+stato potenziamento Capacity: 0
+monete_cadute: 101
+monete_raccolte: 82
+valuta spesa: 995
+valuta massima raggiunta: 154
+-------------------------
+-------------------------
+tempo: 1:15
+vittoria: Nemico
+truppe totali posizionate dal giocatore: 2
+truppe totali posizionate dal nemico: 16
+stato potenziamento Production: 1
+stato potenziamento Capacity: 0
+monete_cadute: 57
+monete_raccolte: 14
+valuta spesa: 205
+valuta massima raggiunta: 150
+-------------------------
+-------------------------
+tempo: 1:19
+vittoria: Nemico
+truppe totali posizionate dal giocatore: 4
+truppe totali posizionate dal nemico: 17
+stato potenziamento Production: 0
+stato potenziamento Capacity: 0
+monete_cadute: 0
+monete_raccolte: 0
+valuta spesa: 200
+valuta massima raggiunta: 53
+-------------------------
+-------------------------
+tempo: 1:08
+vittoria: Nemico
+truppe totali posizionate dal giocatore: 11
+truppe totali posizionate dal nemico: 15
+stato potenziamento Production: 1
+stato potenziamento Capacity: 0
+monete_cadute: 68
+monete_raccolte: 52
+valuta spesa: 645
+valuta massima raggiunta: 180
+-------------------------
+-------------------------
+tempo: 2:27
+vittoria: Nemico
+truppe totali posizionate dal giocatore: 13
+truppe totali posizionate dal nemico: 32
+stato potenziamento Production: 2
+stato potenziamento Capacity: 0
+monete_cadute: 73
+monete_raccolte: 67
+valuta spesa: 1110
+valuta massima raggiunta: 152
+-------------------------
+-------------------------
+tempo: 5:38
+vittoria: Alleato
+truppe totali posizionate dal giocatore: 36
+truppe totali posizionate dal nemico: 76
+stato potenziamento Production: 3
+stato potenziamento Capacity: 1
+monete_cadute: 169
+monete_raccolte: 163
+valuta spesa: 2810
+valuta massima raggiunta: 210
+-------------------------
+-------------------------
+tempo: 0:55
+vittoria: Nemico
+truppe totali posizionate dal giocatore: 0
+truppe totali posizionate dal nemico: 7
+stato potenziamento Production: 0
+stato potenziamento Capacity: 0
+monete_cadute: 27
+monete_raccolte: 7
+valuta spesa: 0
+valuta massima raggiunta: 157
+-------------------------
+-------------------------
+tempo: 1:35
+vittoria: Nemico
+truppe totali posizionate dal giocatore: 7
+truppe totali posizionate dal nemico: 19
+stato potenziamento Production: 1
+stato potenziamento Capacity: 0
+monete_cadute: 47
+monete_raccolte: 39
+valuta spesa: 445
+valuta massima raggiunta: 180
+-------------------------

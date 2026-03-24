@@ -1,0 +1,40 @@
+[gd_scene load_steps=5 format=3 uid="uid://tg4p2w58os6g"]
+
+[ext_resource type="Script" path="res://Levels/Livello1/Objects/colpo.gd" id="1_25u4o"]
+[ext_resource type="Texture2D" uid="uid://c0g0pg17stjft" path="res://Levels/Livello1/bersaglio/freccia_sprite.png" id="2_r8mpj"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cfyeb"]
+size = Vector2(6, 24)
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_vwg8v"]
+radius = 8.0205
+height = 54.0
+
+[node name="Colpo" type="CharacterBody2D"]
+collision_layer = 0
+collision_mask = 0
+script = ExtResource("1_25u4o")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(-1, 4)
+rotation = -0.785398
+texture = ExtResource("2_r8mpj")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 3)
+shape = SubResource("RectangleShape2D_cfyeb")
+
+[node name="AutoDistruzione" type="Timer" parent="."]
+wait_time = 4.0
+autostart = true
+
+[node name="Radar" type="Area2D" parent="."]
+collision_mask = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Radar"]
+position = Vector2(0, -6)
+rotation = 1.56032
+shape = SubResource("CapsuleShape2D_vwg8v")
+
+[connection signal="timeout" from="AutoDistruzione" to="." method="_on_auto_distruzione_timeout"]
+[connection signal="body_entered" from="Radar" to="." method="_on_radar_body_entered"]

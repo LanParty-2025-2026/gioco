@@ -1,0 +1,34 @@
+extends Sprite2D
+
+@export var start_point: Vector2 = Vector2(0, 0)
+@export var end_point: Vector2 = Vector2(500, 0)
+@export var height: float = 100.0  # Altezza massima della parabola
+
+var time: float = 0.0
+var duration: float = 2.0  # Durata del movimento
+
+func _ready():
+	# Imposta la posizione iniziale
+	position = start_point
+
+func _process(delta):
+	# Incrementa il tempo
+	time += delta
+	
+	# Calcola il progresso normalizzato (da 0 a 1)
+	var t = clamp(time / duration, 0.0, 1.0)
+	
+	# Interpolazione quadratica (parabola)
+	var x = lerp(start_point.x, end_point.x, t)
+	var y = lerp(start_point.y, end_point.y, t)
+	
+	# Aggiunge l'effetto parabolico
+	var parabola_offset = height * 4 * t * (1 - t)
+	y -= parabola_offset
+	
+	# Imposta la nuova posizione
+	position = Vector2(x, y)
+	
+	# Ferma il movimento quando raggiunge la destinazione
+	if t >= 1.0:
+		set_process(false)

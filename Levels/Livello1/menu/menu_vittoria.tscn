@@ -1,0 +1,518 @@
+[gd_scene load_steps=16 format=3 uid="uid://ckyiqs8iaextm"]
+
+[ext_resource type="Script" path="res://Levels/Livello1/menu/menu_vittoria.gd" id="1_2ra2b"]
+[ext_resource type="Texture2D" uid="uid://b6dyotyj20gln" path="res://Levels/Livello2/menu/Vector/panel_brown_damaged_dark.svg" id="2_a530w"]
+[ext_resource type="Texture2D" uid="uid://cpbu4rui7ogx3" path="res://Levels/Livello2/menu/Vector/banner_classic_curtain.svg" id="2_vhspx"]
+[ext_resource type="Texture2D" uid="uid://vriuv6nsppl4" path="res://Levels/Livello2/menu/Vector/panel_border_brown.svg" id="3_cemqf"]
+[ext_resource type="Texture2D" uid="uid://dx6flxap108a2" path="res://Levels/Livello2/menu/Vector/banner_hanging.svg" id="3_rij82"]
+[ext_resource type="Texture2D" uid="uid://ihe2y75xvnhi" path="res://Levels/Livello2/menu/Vector/panel_brown.svg" id="4_r7ut4"]
+[ext_resource type="FontFile" uid="uid://kphugf2my440" path="res://Levels/Livello2/menu/temi/MinecraftRegular-Bmg3.otf" id="5_e5yme"]
+[ext_resource type="Theme" uid="uid://cvgbspybigvp1" path="res://Levels/Livello2/menu/temi/fonttheme.tres" id="5_ei0tr"]
+[ext_resource type="Texture2D" uid="uid://d2ne3e67prdx8" path="res://Levels/Livello2/menu/images/hourglass.png" id="6_lo8d8"]
+[ext_resource type="Texture2D" uid="uid://ddbjmifkvun0q" path="res://Levels/Livello2/menu/images/coin.png" id="7_dsu20"]
+[ext_resource type="Texture2D" uid="uid://tl6pem8ff8ox" path="res://Levels/Livello2/menu/images/points.png" id="8_3f61d"]
+[ext_resource type="Texture2D" uid="uid://cuss06u45ofnq" path="res://Levels/Livello2/menu/Vector/button_grey.svg" id="8_pj1lb"]
+
+[sub_resource type="Animation" id="Animation_n7nll"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0.015, 0.015)]
+}
+
+[sub_resource type="Animation" id="Animation_y5kxs"]
+resource_name = "apparizione"
+length = 0.8
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.466667, 0.766667),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0.015, 0.015), Vector2(1.3, 1.3), Vector2(1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_utdw5"]
+_data = {
+"RESET": SubResource("Animation_n7nll"),
+"apparizione": SubResource("Animation_y5kxs")
+}
+
+[node name="menuGenerale" type="Control"]
+process_mode = 3
+z_index = 100
+custom_minimum_size = Vector2(500, 400)
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -250.0
+offset_top = -200.0
+offset_right = 250.0
+offset_bottom = 200.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.015, 0.015)
+pivot_offset = Vector2(252, 182)
+size_flags_horizontal = 4
+script = ExtResource("1_2ra2b")
+
+[node name="NinePatchRect" type="NinePatchRect" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -276.0
+offset_top = -200.0
+offset_right = 276.0
+offset_bottom = 200.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_a530w")
+patch_margin_left = 20
+patch_margin_top = 20
+patch_margin_right = 20
+patch_margin_bottom = 20
+
+[node name="Card" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 2.0
+offset_top = 76.0
+offset_right = 2.0
+offset_bottom = -116.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="TempoTab" type="NinePatchRect" parent="Card"]
+custom_minimum_size = Vector2(150, 185.9)
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -185.9
+offset_right = 150.0
+grow_vertical = 0
+scale = Vector2(0.9, 0.9)
+pivot_offset = Vector2(0.045, 0)
+mouse_filter = 0
+texture = ExtResource("3_cemqf")
+patch_margin_left = 20
+patch_margin_top = 20
+patch_margin_right = 20
+patch_margin_bottom = 20
+
+[node name="TextureRect" type="TextureRect" parent="Card/TempoTab"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -80.5
+offset_right = 80.5
+offset_bottom = 40.0
+grow_horizontal = 2
+texture = ExtResource("3_rij82")
+expand_mode = 1
+
+[node name="titolotempo" type="Label" parent="Card/TempoTab/TextureRect"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -30.0
+offset_top = -7.83337
+offset_right = 30.0
+offset_bottom = 14.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("5_e5yme")
+theme_override_font_sizes/font_size = 20
+text = "Tempo"
+
+[node name="DescriptionTempo" type="NinePatchRect" parent="Card/TempoTab"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -63.0
+offset_top = -43.95
+offset_right = 63.0
+offset_bottom = 78.05
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("4_r7ut4")
+patch_margin_left = 20
+patch_margin_top = 20
+patch_margin_right = 20
+patch_margin_bottom = 20
+
+[node name="TitleDesTempo" type="Label" parent="Card/TempoTab/DescriptionTempo"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -55.0
+offset_top = -43.19
+offset_right = 56.0
+offset_bottom = -0.190002
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("5_ei0tr")
+theme_override_font_sizes/font_size = 20
+text = "Tempo
+Impiegato:"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="containerdati" type="HBoxContainer" parent="Card/TempoTab/DescriptionTempo"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -35.5
+offset_top = -42.2222
+offset_right = 35.5
+offset_bottom = -15.2222
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/separation = 5
+
+[node name="TempoImpiegato" type="Label" parent="Card/TempoTab/DescriptionTempo/containerdati"]
+layout_mode = 2
+theme = ExtResource("5_ei0tr")
+text = "1:20"
+
+[node name="TextureRect" type="TextureRect" parent="Card/TempoTab/DescriptionTempo/containerdati"]
+custom_minimum_size = Vector2(26.295, 18.735)
+layout_mode = 2
+texture = ExtResource("6_lo8d8")
+expand_mode = 1
+
+[node name="CoinTab" type="NinePatchRect" parent="Card"]
+custom_minimum_size = Vector2(150, 160)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -76.0
+offset_top = -112.5
+offset_right = 76.0
+offset_bottom = 72.5
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.1, 1.1)
+pivot_offset = Vector2(74.615, 96.58)
+mouse_filter = 0
+texture = ExtResource("3_cemqf")
+patch_margin_left = 20
+patch_margin_top = 20
+patch_margin_right = 20
+patch_margin_bottom = 20
+
+[node name="TextureRect" type="TextureRect" parent="Card/CoinTab"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -80.5
+offset_right = 80.5
+offset_bottom = 40.0
+grow_horizontal = 2
+texture = ExtResource("3_rij82")
+expand_mode = 1
+
+[node name="titolotempo" type="Label" parent="Card/CoinTab/TextureRect"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -46.0
+offset_top = -8.43944
+offset_right = 46.0
+offset_bottom = 13.894
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("5_e5yme")
+theme_override_font_sizes/font_size = 20
+text = "BricoCoin"
+
+[node name="DescriptionBricoCoin" type="NinePatchRect" parent="Card/CoinTab"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -68.0
+offset_top = -43.5
+offset_right = 69.0
+offset_bottom = 78.5
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("4_r7ut4")
+patch_margin_left = 20
+patch_margin_top = 20
+patch_margin_right = 20
+patch_margin_bottom = 20
+
+[node name="TitleDesBrico" type="Label" parent="Card/CoinTab/DescriptionBricoCoin"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -59.5
+offset_top = 16.815
+offset_right = 59.5
+offset_bottom = 59.815
+grow_horizontal = 2
+theme = ExtResource("5_ei0tr")
+theme_override_font_sizes/font_size = 20
+text = "BricoCoin
+guadagnati"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="containerdati" type="HBoxContainer" parent="Card/CoinTab/DescriptionBricoCoin"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -33.5
+offset_top = -43.1291
+offset_right = 33.5
+offset_bottom = -16.1291
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/separation = 5
+
+[node name="Bricoguadagnati" type="Label" parent="Card/CoinTab/DescriptionBricoCoin/containerdati"]
+layout_mode = 2
+theme = ExtResource("5_ei0tr")
+text = "334"
+
+[node name="TextureRect" type="TextureRect" parent="Card/CoinTab/DescriptionBricoCoin/containerdati"]
+custom_minimum_size = Vector2(26.295, 18.735)
+layout_mode = 2
+texture = ExtResource("7_dsu20")
+expand_mode = 1
+
+[node name="PointTab" type="NinePatchRect" parent="Card"]
+custom_minimum_size = Vector2(150, 185.9)
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -139.0
+offset_top = -186.0
+offset_right = 11.0
+offset_bottom = -0.100006
+grow_horizontal = 0
+grow_vertical = 0
+scale = Vector2(0.9, 0.9)
+pivot_offset = Vector2(0.045, 0)
+mouse_filter = 0
+texture = ExtResource("3_cemqf")
+patch_margin_left = 20
+patch_margin_top = 20
+patch_margin_right = 20
+patch_margin_bottom = 20
+
+[node name="TextureRect" type="TextureRect" parent="Card/PointTab"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -80.5
+offset_right = 80.5
+offset_bottom = 40.0
+grow_horizontal = 2
+texture = ExtResource("3_rij82")
+expand_mode = 1
+
+[node name="Punteggio" type="Label" parent="Card/PointTab/TextureRect"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -48.0
+offset_top = -7.83337
+offset_right = 48.0
+offset_bottom = 14.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("5_e5yme")
+theme_override_font_sizes/font_size = 20
+text = "Punteggio"
+
+[node name="Descriptionpunteggio" type="NinePatchRect" parent="Card/PointTab"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -63.0
+offset_top = -43.95
+offset_right = 63.0
+offset_bottom = 78.05
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("4_r7ut4")
+patch_margin_left = 20
+patch_margin_top = 20
+patch_margin_right = 20
+patch_margin_bottom = 20
+
+[node name="TitleDesPunteggio" type="Label" parent="Card/PointTab/Descriptionpunteggio"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -55.0
+offset_top = -43.19
+offset_right = 56.0
+offset_bottom = -0.190002
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("5_ei0tr")
+theme_override_font_sizes/font_size = 20
+text = "Punti
+Ottenuti:"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="containerdati" type="HBoxContainer" parent="Card/PointTab/Descriptionpunteggio"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -37.5
+offset_top = -43.185
+offset_right = 37.5
+offset_bottom = -16.185
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/separation = 5
+
+[node name="punteggioottenuto" type="Label" parent="Card/PointTab/Descriptionpunteggio/containerdati"]
+layout_mode = 2
+theme = ExtResource("5_ei0tr")
+text = "2345"
+
+[node name="TextureRect" type="TextureRect" parent="Card/PointTab/Descriptionpunteggio/containerdati"]
+custom_minimum_size = Vector2(26.295, 18.735)
+layout_mode = 2
+texture = ExtResource("8_3f61d")
+expand_mode = 1
+
+[node name="TitoloSprite" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -199.5
+offset_top = -22.0
+offset_right = 199.5
+offset_bottom = 42.0
+grow_horizontal = 2
+texture = ExtResource("2_vhspx")
+
+[node name="titolo" type="Label" parent="TitoloSprite"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -70.0
+offset_top = 16.0
+offset_right = 67.0
+offset_bottom = 46.0
+grow_horizontal = 2
+theme_override_fonts/font = ExtResource("5_e5yme")
+theme_override_font_sizes/font_size = 30
+text = "TITOLO"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_utdw5")
+}
+
+[node name="bottonedes" type="TextureButton" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -66.0
+offset_top = -98.0
+offset_right = 73.0
+offset_bottom = -45.0
+grow_horizontal = 2
+grow_vertical = 0
+texture_normal = ExtResource("8_pj1lb")
+stretch_mode = 0
+
+[node name="Label" type="Label" parent="bottonedes"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -11.1667
+offset_right = 20.0
+offset_bottom = 11.1667
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("5_ei0tr")
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+text = "CONTINUA"
+
+[connection signal="pressed" from="bottonedes" to="." method="_on_bottonedes_pressed"]

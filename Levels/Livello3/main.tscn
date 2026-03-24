@@ -1,0 +1,270 @@
+[gd_scene load_steps=9 format=3 uid="uid://c7o2vmpq7yecb"]
+
+[ext_resource type="Script" path="res://Levels/Livello3/pagina_finale.gd" id="1_iyjg2"]
+[ext_resource type="Texture2D" uid="uid://c7o15g5soyqb7" path="res://Levels/Livello3/kahoot.png" id="2_ktglh"]
+[ext_resource type="Script" path="res://Levels/Livello3/assegnazione_risposte_domande.gd" id="3_1sioe"]
+[ext_resource type="Script" path="res://Levels/Livello3/checkrisposte.gd" id="4_k1dcv"]
+[ext_resource type="Script" path="res://Levels/Livello3/tempo_rimanente.gd" id="5_j0yhr"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_tcii2"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ixrfq"]
+bg_color = Color(0.169245, 0.169245, 0.169245, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_b5j0u"]
+
+[node name="main" type="Node2D"]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="paginaFinale" type="Control" parent="CanvasLayer"]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_iyjg2")
+
+[node name="Panel" type="Panel" parent="CanvasLayer/paginaFinale"]
+modulate = Color(0, 0, 0, 1)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="giuste" type="Label" parent="CanvasLayer/paginaFinale"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 85.0
+offset_top = -134.0
+offset_right = 359.0
+offset_bottom = -85.0
+grow_vertical = 2
+theme_override_colors/font_color = Color(0, 0.666667, 0, 1)
+theme_override_font_sizes/font_size = 35
+text = "Risposte giuste: "
+
+[node name="sbagliate" type="Label" parent="CanvasLayer/paginaFinale"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 85.0
+offset_top = 22.0
+offset_right = 411.0
+offset_bottom = 71.0
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.686275, 0, 0, 1)
+theme_override_font_sizes/font_size = 35
+text = "Risposte Sbagliate: "
+
+[node name="paginaDomande" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/paginaDomande"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_ktglh")
+expand_mode = 1
+
+[node name="Button2" type="Button" parent="CanvasLayer/paginaDomande"]
+layout_mode = 1
+offset_left = 8.0
+offset_top = 440.0
+offset_right = 568.0
+offset_bottom = 516.0
+theme_override_font_sizes/font_size = 26
+theme_override_styles/focus = SubResource("StyleBoxEmpty_tcii2")
+theme_override_styles/disabled_mirrored = SubResource("StyleBoxEmpty_tcii2")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_tcii2")
+theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxEmpty_tcii2")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_tcii2")
+theme_override_styles/hover_mirrored = SubResource("StyleBoxEmpty_tcii2")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_tcii2")
+theme_override_styles/pressed_mirrored = SubResource("StyleBoxEmpty_tcii2")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_tcii2")
+theme_override_styles/normal_mirrored = SubResource("StyleBoxEmpty_tcii2")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_tcii2")
+flat = true
+alignment = 0
+
+[node name="Label2" type="Label" parent="CanvasLayer/paginaDomande/Button2"]
+layout_mode = 0
+offset_left = 56.0
+offset_right = 572.0
+offset_bottom = 75.0
+theme_override_font_sizes/font_size = 26
+text = "dawsddada"
+vertical_alignment = 1
+
+[node name="Button3" type="Button" parent="CanvasLayer/paginaDomande"]
+layout_mode = 1
+offset_left = 581.0
+offset_top = 440.0
+offset_right = 1144.0
+offset_bottom = 516.0
+theme_override_font_sizes/font_size = 26
+theme_override_styles/focus = SubResource("StyleBoxEmpty_tcii2")
+theme_override_styles/disabled_mirrored = SubResource("StyleBoxEmpty_tcii2")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_tcii2")
+theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxEmpty_tcii2")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_tcii2")
+theme_override_styles/hover_mirrored = SubResource("StyleBoxEmpty_tcii2")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_tcii2")
+theme_override_styles/pressed_mirrored = SubResource("StyleBoxEmpty_tcii2")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_tcii2")
+theme_override_styles/normal_mirrored = SubResource("StyleBoxEmpty_tcii2")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_tcii2")
+flat = true
+alignment = 0
+
+[node name="Label3" type="Label" parent="CanvasLayer/paginaDomande/Button3"]
+layout_mode = 0
+offset_left = 92.0
+offset_top = -2.0
+offset_right = 608.0
+offset_bottom = 73.0
+theme_override_font_sizes/font_size = 26
+text = "dawsddada"
+vertical_alignment = 1
+
+[node name="Button4" type="Button" parent="CanvasLayer/paginaDomande"]
+layout_mode = 1
+offset_left = 11.0
+offset_top = 528.0
+offset_right = 568.0
+offset_bottom = 604.0
+theme_override_font_sizes/font_size = 26
+theme_override_styles/focus = SubResource("StyleBoxEmpty_tcii2")
+theme_override_styles/disabled_mirrored = SubResource("StyleBoxEmpty_tcii2")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_tcii2")
+theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxEmpty_tcii2")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_tcii2")
+theme_override_styles/hover_mirrored = SubResource("StyleBoxEmpty_tcii2")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_tcii2")
+theme_override_styles/pressed_mirrored = SubResource("StyleBoxEmpty_tcii2")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_tcii2")
+theme_override_styles/normal_mirrored = SubResource("StyleBoxEmpty_tcii2")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_tcii2")
+flat = true
+alignment = 0
+
+[node name="Label4" type="Label" parent="CanvasLayer/paginaDomande/Button4"]
+layout_mode = 0
+offset_left = 56.0
+offset_right = 572.0
+offset_bottom = 75.0
+theme_override_font_sizes/font_size = 26
+text = "dawsddada"
+vertical_alignment = 1
+
+[node name="Button5" type="Button" parent="CanvasLayer/paginaDomande"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.955729
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -520.0
+offset_top = -120.0
+offset_right = -8.0
+offset_bottom = -44.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_font_sizes/font_size = 26
+theme_override_styles/focus = SubResource("StyleBoxEmpty_tcii2")
+theme_override_styles/disabled_mirrored = SubResource("StyleBoxEmpty_tcii2")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_tcii2")
+theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxEmpty_tcii2")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_tcii2")
+theme_override_styles/hover_mirrored = SubResource("StyleBoxEmpty_tcii2")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_tcii2")
+theme_override_styles/pressed_mirrored = SubResource("StyleBoxEmpty_tcii2")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_tcii2")
+theme_override_styles/normal_mirrored = SubResource("StyleBoxEmpty_tcii2")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_tcii2")
+flat = true
+alignment = 0
+clip_text = true
+metadata/_edit_use_anchors_ = true
+
+[node name="Label5" type="Label" parent="CanvasLayer/paginaDomande/Button5"]
+layout_mode = 0
+offset_left = 48.1252
+offset_top = -4.0
+offset_right = 564.125
+offset_bottom = 71.0
+theme_override_font_sizes/font_size = 26
+text = "dawsddada"
+vertical_alignment = 1
+
+[node name="Domanda" type="Label" parent="CanvasLayer/paginaDomande"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -458.5
+offset_top = -318.0
+offset_right = 458.5
+offset_bottom = -232.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 23
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="assegnazioneRisposteDomande" type="Node" parent="CanvasLayer/paginaDomande"]
+script = ExtResource("3_1sioe")
+
+[node name="checkrisposte" type="Node" parent="CanvasLayer/paginaDomande"]
+script = ExtResource("4_k1dcv")
+
+[node name="tempoRimanente" type="ProgressBar" parent="CanvasLayer/paginaDomande"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -524.0
+offset_top = -236.0
+offset_right = 524.0
+offset_bottom = -221.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_ixrfq")
+theme_override_styles/fill = SubResource("StyleBoxFlat_b5j0u")
+show_percentage = false
+script = ExtResource("5_j0yhr")
+
+[node name="Timer" type="Timer" parent="CanvasLayer/paginaDomande/tempoRimanente"]
+wait_time = 0.05
+autostart = true
+
+[connection signal="pressed" from="CanvasLayer/paginaDomande/Button2" to="CanvasLayer/paginaDomande/checkrisposte" method="_on_button_pressed" binds= [0]]
+[connection signal="pressed" from="CanvasLayer/paginaDomande/Button3" to="CanvasLayer/paginaDomande/checkrisposte" method="_on_button_pressed" binds= [1]]
+[connection signal="pressed" from="CanvasLayer/paginaDomande/Button4" to="CanvasLayer/paginaDomande/checkrisposte" method="_on_button_pressed" binds= [2]]
+[connection signal="pressed" from="CanvasLayer/paginaDomande/Button5" to="CanvasLayer/paginaDomande/checkrisposte" method="_on_button_pressed" binds= [3]]
+[connection signal="partita_finita" from="CanvasLayer/paginaDomande/assegnazioneRisposteDomande" to="CanvasLayer/paginaFinale" method="assegna_valori"]
+[connection signal="tempo_finito" from="CanvasLayer/paginaDomande/tempoRimanente" to="CanvasLayer/paginaDomande/assegnazioneRisposteDomande" method="carica_prossima_domande"]
+[connection signal="tempo_finito" from="CanvasLayer/paginaDomande/tempoRimanente" to="CanvasLayer/paginaDomande/tempoRimanente" method="resetta_tempo"]
+[connection signal="timeout" from="CanvasLayer/paginaDomande/tempoRimanente/Timer" to="CanvasLayer/paginaDomande/tempoRimanente" method="_on_timer_timeout"]

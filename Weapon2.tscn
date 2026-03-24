@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://dqf0f7qsbuvd8"]
+
+[ext_resource type="Texture2D" uid="uid://e24k6kprjhdu" path="res://Textures/fucile.png" id="1_7wnmr"]
+[ext_resource type="Script" path="res://weapon_2.gd" id="2_rk1qx"]
+
+[node name="Weapon2" type="Sprite2D"]
+position = Vector2(95, 0)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("1_7wnmr")
+script = ExtResource("2_rk1qx")
+
+[node name="puntoSparo" type="Node2D" parent="."]
+position = Vector2(150, -12)

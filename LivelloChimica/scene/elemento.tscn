@@ -1,0 +1,40 @@
+[gd_scene load_steps=4 format=3 uid="uid://cf16jx31swk8f"]
+
+[ext_resource type="Script" path="res://LivelloChimica/scripts/elemento.gd" id="1_uaopm"]
+[ext_resource type="Script" path="res://LivelloChimica/scripts/button.gd" id="2_b5qwp"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_a81gi"]
+size = Vector2(26, 28)
+
+[node name="Elemento" type="Area2D"]
+light_mask = 2
+visibility_layer = 2
+z_index = 2021
+position = Vector2(86, 95)
+script = ExtResource("1_uaopm")
+element_name = "Elemento"
+
+[node name="Button" type="Button" parent="."]
+light_mask = 2
+visibility_layer = 2
+z_index = 1
+offset_left = -20.0
+offset_top = -13.0
+offset_right = 24.0
+offset_bottom = 11.0
+focus_mode = 0
+flat = true
+expand_icon = true
+script = ExtResource("2_b5qwp")
+metadata/_edit_use_anchors_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+light_mask = 2
+visibility_layer = 2
+z_index = 1
+position = Vector2(-6, 2)
+shape = SubResource("RectangleShape2D_a81gi")
+
+[connection signal="area_shape_entered" from="." to="." method="_on_area_shape_entered"]
+[connection signal="button_down" from="Button" to="." method="_on_button_button_down"]
+[connection signal="button_up" from="Button" to="." method="_on_button_button_up"]

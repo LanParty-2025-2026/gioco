@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://dsq4vxti6ficm"]
+
+[ext_resource type="Texture2D" uid="uid://cpqgdg4tdfnis" path="res://Textures/barretDiZanoni.png" id="1_qr8k2"]
+[ext_resource type="Script" path="res://weapon_2.gd" id="2_4d4e6"]
+
+[node name="Weapon2" type="Sprite2D"]
+position = Vector2(95, 0)
+scale = Vector2(3, 3)
+texture = ExtResource("1_qr8k2")
+script = ExtResource("2_4d4e6")
+
+[node name="puntoSparo" type="Node2D" parent="."]
+position = Vector2(29.6667, -1)

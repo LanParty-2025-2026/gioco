@@ -1,0 +1,52 @@
+{
+  "domanda1": {
+	"domanda": "When was the European Union officially established?",
+	"risposte": ["1945", "1957", "1973", "1993"],
+	"rispostaCorretta": 3
+  },
+  "domanda2": {
+	"domanda": "Which treaty formally created the European Union?",
+	"risposte": ["Treaty of Rome", "Maastricht Treaty", "Treaty of Lisbon", "Schengen Agreement"],
+	"rispostaCorretta": 1
+  },
+  "domanda3": {
+	"domanda": "How many countries are members of the European Union in 2025?",
+	"risposte": ["27", "28", "26", "30"],
+	"rispostaCorretta": 0
+  },
+  "domanda4": {
+	"domanda": "Which of the following countries is not a member of the European Union?",
+	"risposte": ["Austria", "Norway", "Poland", "Portugal"],
+	"rispostaCorretta": 1
+  },
+  "domanda5": {
+	"domanda": "What is the name of the EU's common currency?",
+	"risposte": ["Euro", "Franc", "Crown", "Ducat"],
+	"rispostaCorretta": 0
+  },
+  "domanda6": {
+	"domanda": "Which institution is responsible for proposing new EU legislation?",
+	"risposte": ["European Parliament", "European Council", "European Commission", "Council of the European Union"],
+	"rispostaCorretta": 2
+  },
+  "domanda7": {
+	"domanda": "Where is the European Parliament primarily based?",
+	"risposte": ["Brussels", "Strasbourg", "Luxembourg", "Frankfurt"],
+	"rispostaCorretta": 1
+  },
+  "domanda8": {
+	"domanda": "What does the Schengen Agreement allow?",
+	"risposte": ["A common defense policy", "Free trade within the EU", "Visa-free travel between member states", "A shared tax system"],
+	"rispostaCorretta": 2
+  },
+  "domanda9": {
+	"domanda": "Which of these countries left the EU in 2020?",
+	"risposte": ["Ireland", "Greece", "United Kingdom", "Sweden"],
+	"rispostaCorretta": 2
+  },
+  "domanda10": {
+	"domanda": "What is the main goal of the Common Agricultural Policy (CAP)?",
+	"risposte": ["Promote tourism", "Increase military cooperation", "Ensure food security and fair income for farmers", "Fund education systems"],
+	"rispostaCorretta": 2
+  }
+}

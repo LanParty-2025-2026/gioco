@@ -1,0 +1,145 @@
+[gd_scene load_steps=15 format=3 uid="uid://c875bsn04juyi"]
+
+[ext_resource type="Script" path="res://Levels/Livello1/world/TerminaPartita.gd" id="1_7na4o"]
+[ext_resource type="PackedScene" uid="uid://dq4drko6yx7oy" path="res://Levels/Livello1/bersaglio/bersaglio.tscn" id="2_mj5e8"]
+[ext_resource type="PackedScene" uid="uid://cajlkyphyie1g" path="res://Levels/Livello1/Bozze/Cavalieri/generatore_di_cavalieri.tscn" id="4_gn8x3"]
+[ext_resource type="Script" path="res://Levels/Livello1/Bozze/Cavalieri/distruggi_cavalieri.gd" id="4_w7p5m"]
+[ext_resource type="AudioStream" uid="uid://sonxodcomwa4" path="res://Levels/Livello1/Sound/bow-and-arrow-shoot-sound-effect-2-239699.mp3" id="5_am2fe"]
+[ext_resource type="Script" path="res://Levels/Livello1/UI_GD/control.gd" id="5_cbnxs"]
+[ext_resource type="PackedScene" uid="uid://c022srp45gink" path="res://Levels/Livello1/CPU/ai.tscn" id="6_6kvby"]
+[ext_resource type="AudioStream" uid="uid://d3guepc828kyo" path="res://Levels/Livello1/Sound/bow-loading-38752.mp3" id="6_ayhtc"]
+[ext_resource type="Texture2D" uid="uid://bcww050jsovbj" path="res://Levels/Livello1/world/mappacool.png" id="8_vmacn"]
+[ext_resource type="AudioStream" uid="uid://b08ha645y0emf" path="res://Levels/Livello1/Music/dungeon combact (1).mp3" id="10_l37q2"]
+
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_kxrym"]
+vertices = PackedVector2Array(788.422, 643.961, 450.547, 643.117, 562.789, 471.227, 653.961, 493.344, 681.43, 515.82, 1088.35, 461.789, 1154.05, 396.078, 1191.57, 375.547, 1192.58, 458.148, 1131.76, 521, 994.57, 444.352, 1004.16, 521, 860.492, 419.75, 939.773, 398.141, 11, 203.867, 11, 142.297, 345.906, 158.43, 342.797, 174.031, 330.633, 199.969, 907.742, 324.773, 823.594, 305.039, 816.313, 189.508, 880.422, 252.594, 748.867, 245.938, 711.773, 166.328, 443.203, 232.781, 415.578, 249.258, 468.203, 313.219, 492.883, 258.133, 536, 275.141, 599.328, 332.469, 591.422, 364.094, 747.961, 14.7109, 814, 12.3594, 826.602, 12.3828, 832.93, 85.6406, 714.797, 508.391)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3, 4), PackedInt32Array(5, 6, 7, 8, 9), PackedInt32Array(10, 5, 9, 11, 12), PackedInt32Array(13, 10, 12), PackedInt32Array(14, 15, 16, 17, 18), PackedInt32Array(19, 13, 12, 20), PackedInt32Array(21, 22, 19, 20, 23, 24), PackedInt32Array(18, 17, 25, 26), PackedInt32Array(27, 26, 25, 28), PackedInt32Array(2, 27, 28, 29, 30, 31), PackedInt32Array(24, 32, 33, 34, 35, 21), PackedInt32Array(29, 24, 23, 30), PackedInt32Array(2, 31, 3), PackedInt32Array(0, 4, 36)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(1, 1, 1197, 3, 1205, 655, 1, 652)])
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_snpet"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1ui4o"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xbb7p"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[node name="World" type="Node2D"]
+script = ExtResource("1_7na4o")
+
+[node name="Tilemaps" type="Node2D" parent="."]
+
+[node name="NavigationRegion2D" type="NavigationRegion2D" parent="Tilemaps"]
+navigation_polygon = SubResource("NavigationPolygon_kxrym")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Tilemaps/NavigationRegion2D"]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Tilemaps/NavigationRegion2D/StaticBody2D"]
+polygon = PackedVector2Array(5, 132, 358, 149, 354, 169, 448, 224, 497, 249, 535, 264, 703, 160, 740, 5, 824, 2, 2, -1)
+
+[node name="CollisionPolygon2D2" type="CollisionPolygon2D" parent="Tilemaps/NavigationRegion2D/StaticBody2D"]
+polygon = PackedVector2Array(1, 214, 328, 210, 409, 257, 460, 319, 551, 471, 440, 641, 3, 647)
+
+[node name="CollisionPolygon2D3" type="CollisionPolygon2D" parent="Tilemaps/NavigationRegion2D/StaticBody2D"]
+polygon = PackedVector2Array(608, 339, 748, 258, 815, 311, 852, 426, 1001, 531, 1136, 531, 1196, 469, 1200, 648, 802, 648, 720, 497, 684, 505, 662, 487, 602, 363)
+
+[node name="CollisionPolygon2D4" type="CollisionPolygon2D" parent="Tilemaps/NavigationRegion2D/StaticBody2D"]
+polygon = PackedVector2Array(836, 5, 843, 86, 827, 186, 889, 247, 917, 321, 948, 392, 999, 435, 1085, 451, 1148, 388, 1201, 359, 1199, 1)
+
+[node name="Mappacool" type="Sprite2D" parent="Tilemaps"]
+position = Vector2(599, 325)
+scale = Vector2(0.126434, 0.126434)
+texture = ExtResource("8_vmacn")
+
+[node name="Bersaglio" parent="." instance=ExtResource("2_mj5e8")]
+unique_name_in_owner = true
+position = Vector2(624, 544)
+scale = Vector2(0.7, 0.7)
+
+[node name="GeneratoreDiCavalieri" parent="." instance=ExtResource("4_gn8x3")]
+minSpawn = 3.0
+maxSpawn = 6.0
+
+[node name="Posizioni" type="Node2D" parent="GeneratoreDiCavalieri"]
+
+[node name="posizione1" type="Marker2D" parent="GeneratoreDiCavalieri/Posizioni"]
+position = Vector2(33, 177)
+
+[node name="posizione2" type="Marker2D" parent="GeneratoreDiCavalieri/Posizioni"]
+position = Vector2(789, 27)
+
+[node name="posizione3" type="Marker2D" parent="GeneratoreDiCavalieri/Posizioni"]
+position = Vector2(1180, 432)
+
+[node name="Cavalieri" type="Node" parent="GeneratoreDiCavalieri"]
+
+[node name="DistruggiCavalieri" type="Node" parent="."]
+script = ExtResource("4_w7p5m")
+
+[node name="sparo" type="AudioStreamPlayer" parent="DistruggiCavalieri"]
+stream = ExtResource("5_am2fe")
+volume_db = -0.735
+
+[node name="loading" type="AudioStreamPlayer" parent="DistruggiCavalieri"]
+stream = ExtResource("6_ayhtc")
+volume_db = 6.414
+
+[node name="Input" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1150.0
+offset_bottom = 650.0
+script = ExtResource("5_cbnxs")
+metadata/_edit_lock_ = true
+
+[node name="Input" type="LineEdit" parent="Input"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.543
+anchor_top = 1.002
+anchor_right = 0.543
+anchor_bottom = 1.002
+offset_left = -45.4501
+offset_top = 30.7
+offset_right = 113.55
+offset_bottom = 61.7
+grow_horizontal = 2
+grow_vertical = 0
+scale = Vector2(0.615, 0.615)
+tooltip_text = "Input"
+theme_override_styles/focus = SubResource("StyleBoxFlat_snpet")
+theme_override_styles/read_only = SubResource("StyleBoxFlat_1ui4o")
+theme_override_styles/normal = SubResource("StyleBoxFlat_xbb7p")
+alignment = 1
+max_length = 3
+virtual_keyboard_type = 2
+selecting_enabled = false
+caret_blink = true
+metadata/_edit_use_anchors_ = true
+
+[node name="SkinInput" type="Label" parent="Input"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.543913
+anchor_top = 0.998462
+anchor_right = 0.543913
+anchor_bottom = 1.00154
+offset_left = -77.5
+offset_top = -31.0
+offset_right = 77.5
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 20
+text = "Input"
+horizontal_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="AI" parent="." instance=ExtResource("6_6kvby")]
+FireRate = 4.0
+
+[node name="Music" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("10_l37q2")
+volume_db = -20.489
+autoplay = true
+parameters/looping = true

@@ -1,0 +1,196 @@
+[gd_scene load_steps=19 format=3 uid="uid://bufralk8f58yv"]
+
+[ext_resource type="Texture2D" uid="uid://cs4bm1ie3llpo" path="res://Textures/Warrior_Blue.png" id="1_a17ys"]
+
+[sub_resource type="GDScript" id="GDScript_2ruc6"]
+script/source = "extends CharacterBody2D
+@onready var hitbox = $CollisionShape2D  # L'Area2D per la collisione
+
+@export var speed = 200
+@onready var animation = $AnimatedSprite2D
+
+func _enter_tree() -> void:
+	#quando entra nel world allora
+	set_multiplayer_authority(str(name).to_int())
+	print(\"passo1\")
+func _ready() -> void:
+	if is_multiplayer_authority():
+		z_index = 150
+		print(\"passo2\")
+func _physics_process(delta: float) -> void:
+	# questo controllo va fatto in ogni funzione dove bisogna controllare se chi ha fatto un input/aggiornamento è il proprietario dell'istanza
+	if not is_multiplayer_authority(): return
+	var variabile:Vector2 = Vector2(
+		Input.get_axis(\"sinistra\",\"destra\"),
+		Input.get_axis(\"su\",\"giu\")
+			) 
+	if (variabile.x != 0 or variabile.y != 0):
+		variabile = variabile.normalized()
+		position += variabile * speed * delta
+		move_and_slide()
+		animation.play(\"walk\")
+		if variabile.x < 0:
+			animation.flip_h = true
+		elif variabile.x > 0:
+			animation.flip_h = false
+	else:
+		animation.play(\"idle\")
+	print(\"passo5\")	
+func _on_timer_timeout() -> void:
+	if not is_multiplayer_authority(): return
+
+	# Controlla se il corpo sta collidendo con altri oggetti
+	
+"
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_82mki"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+properties/2/path = NodePath("AnimatedSprite2D:frame")
+properties/2/spawn = true
+properties/2/replication_mode = 1
+properties/3/path = NodePath("AnimatedSprite2D:animation")
+properties/3/spawn = true
+properties/3/replication_mode = 1
+properties/4/path = NodePath("AnimatedSprite2D:flip_h")
+properties/4/spawn = true
+properties/4/replication_mode = 2
+properties/5/path = NodePath(".:visible")
+properties/5/spawn = true
+properties/5/replication_mode = 1
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_obfbq"]
+atlas = ExtResource("1_a17ys")
+region = Rect2(0, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gvg67"]
+atlas = ExtResource("1_a17ys")
+region = Rect2(192, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h6opi"]
+atlas = ExtResource("1_a17ys")
+region = Rect2(384, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5q8no"]
+atlas = ExtResource("1_a17ys")
+region = Rect2(576, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7qpp8"]
+atlas = ExtResource("1_a17ys")
+region = Rect2(768, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7sd66"]
+atlas = ExtResource("1_a17ys")
+region = Rect2(960, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_u1vlj"]
+atlas = ExtResource("1_a17ys")
+region = Rect2(0, 192, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5p0fi"]
+atlas = ExtResource("1_a17ys")
+region = Rect2(192, 192, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_i8m2x"]
+atlas = ExtResource("1_a17ys")
+region = Rect2(384, 192, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0c0ni"]
+atlas = ExtResource("1_a17ys")
+region = Rect2(576, 192, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dhm01"]
+atlas = ExtResource("1_a17ys")
+region = Rect2(768, 192, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3uavc"]
+atlas = ExtResource("1_a17ys")
+region = Rect2(960, 192, 192, 192)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_6oy47"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_obfbq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gvg67")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_h6opi")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5q8no")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7qpp8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7sd66")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 11.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_u1vlj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5p0fi")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_i8m2x")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0c0ni")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dhm01")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3uavc")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 9.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4ltia"]
+size = Vector2(83, 24)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fv1g3"]
+size = Vector2(76, 81)
+
+[node name="Player" type="CharacterBody2D"]
+collision_layer = 2
+script = SubResource("GDScript_2ruc6")
+
+[node name="Timer" type="Timer" parent="."]
+autostart = true
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_82mki")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(141, 102)
+sprite_frames = SubResource("SpriteFrames_6oy47")
+animation = &"idle"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(146, 93)
+shape = SubResource("RectangleShape2D_4ltia")
+disabled = true
+
+[node name="Area2D" type="Area2D" parent="CollisionShape2D"]
+position = Vector2(-5, -1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CollisionShape2D/Area2D"]
+position = Vector2(3, -2.5)
+shape = SubResource("RectangleShape2D_fv1g3")
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

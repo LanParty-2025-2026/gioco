@@ -1,0 +1,49 @@
+[gd_scene load_steps=5 format=3 uid="uid://dwygssc405sua"]
+
+[ext_resource type="PackedScene" uid="uid://dg3a2aq0axjau" path="res://Levels/Livello2/UI/card.tscn" id="1_lelfj"]
+[ext_resource type="Texture2D" uid="uid://b50tl64iovujs" path="res://Levels/Livello2/CardAssets/spadacartaimage.png" id="2_ujxwg"]
+[ext_resource type="Texture2D" uid="uid://xclglpnotj2" path="res://Levels/Livello2/CardAssets/lanciaimagecarta.png" id="3_8174j"]
+[ext_resource type="Texture2D" uid="uid://df7xxed1w58dj" path="res://Levels/Livello2/CardAssets/Archer_Blue1.png" id="4_fixsm"]
+
+[node name="CardContainer" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 944.0
+offset_bottom = 346.0
+
+[node name="Spada" parent="." instance=ExtResource("1_lelfj")]
+layout_mode = 1
+offset_left = 64.0
+offset_top = 64.0
+offset_right = 64.0
+offset_bottom = 64.0
+image = ExtResource("2_ujxwg")
+tipoCarta = "spada"
+costo = 50
+vita = 90
+danno = 8
+speed = 4000
+
+[node name="Lancia" parent="." instance=ExtResource("1_lelfj")]
+offset_left = 352.0
+offset_top = 64.0
+offset_right = 352.0
+offset_bottom = 64.0
+image = ExtResource("3_8174j")
+tipoCarta = "lancia"
+costo = 80
+vita = 125
+danno = 12
+speed = 2000
+
+[node name="Arco" parent="." instance=ExtResource("1_lelfj")]
+offset_left = 640.0
+offset_top = 64.0
+offset_right = 640.0
+offset_bottom = 64.0
+image = ExtResource("4_fixsm")
+tipoCarta = "arco"
+costo = 70
+vita = 30
+danno = 5
+speed = 3000
