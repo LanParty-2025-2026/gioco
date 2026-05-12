@@ -11,6 +11,7 @@ func _ready() -> void:
 	input.focus_mode = Control.FOCUS_ALL
 	input.text_changed.connect(_on_input_text_changed)
 	input.focus_exited.connect(_on_focus_exited)
+	testo_vis.add_theme_color_override("font_color", Color.WHITE)
 	input.call_deferred("grab_focus")
 
 func _on_input_text_changed(new_text: String) -> void:
