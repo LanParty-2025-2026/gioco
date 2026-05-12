@@ -17,7 +17,7 @@ func _ready() -> void:
 	carica_prossima_domande()
 
 func carica_prossima_domande():
-	if domanda_corrente >= 9:
+	if domanda_corrente >= 10:
 		partita_finita.emit()
 		return
 	domanda_corrente +=1

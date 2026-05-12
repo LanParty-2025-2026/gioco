@@ -1,40 +1,33 @@
 
 extends Control
 
-##DATI problemi tecnici dell'engine non è possibile togliere
-#la barra che lampeggia durante la ascrittura
-#per questo è stata utilizzata una label che riflette ciò che è scritto
-#nell'input mentre quest'ultimo è invisibile
+# La LineEdit è fuori schermo intenzionalmente per nascondere il cursore lampeggiante.
+# La SkinInput Label riflette visivamente il testo scritto.
 
 @onready var input: LineEdit = $Input
 @onready var testo_vis: Label = $SkinInput
 
-#permette di non staccare il focus di scrittura 
-func _ready() -> void:  
-	input.grab_focus()
-	input.focus_exited.connect(_on_focus_exited)
-	input.virtual_keyboard_type = LineEdit.KEYBOARD_TYPE_NUMBER
+func _ready() -> void:
+	input.focus_mode = Control.FOCUS_ALL
 	input.text_changed.connect(_on_input_text_changed)
+	input.focus_exited.connect(_on_focus_exited)
+	input.call_deferred("grab_focus")
 
-#permette di scrivere solo valori numerici
 func _on_input_text_changed(new_text: String) -> void:
 	var solo_numeri = ""
 	for carattere in new_text:
-		if carattere.is_valid_int():  
+		if carattere.is_valid_int():
 			solo_numeri += carattere
-	input.set_text(solo_numeri)
-	input.caret_column = solo_numeri.length()
+	if solo_numeri != new_text:
+		input.set_text(solo_numeri)
+		input.caret_column = solo_numeri.length()
 
-#rimette il focus se si dovesse togliere 
 func _on_focus_exited() -> void:
-	input.grab_focus()
-	
-func _process(delta: float) -> void:
-	aggiornaTesto()
+	input.call_deferred("grab_focus")
 
-#aggiorna la label contente l'input
-func aggiornaTesto():
+func _process(_delta: float) -> void:
 	testo_vis.text = input.text
-	
-func resetInput():
+
+func resetInput() -> void:
 	input.text = ""
+	input.call_deferred("grab_focus")

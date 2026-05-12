@@ -9,54 +9,49 @@ const colpo = preload("res://Levels/Livello1/Objects/colpo.tscn")
 @onready var bersaglio_sprite: AnimatedSprite2D = %Bersaglio/Sprite2D
 @onready var freccia: Sprite2D = %Bersaglio/Sprite2D2
 
-#controlla ogni frame che nella casella input sia presente il valore corretto
-func _process(delta: float) -> void:
-	var cavalieriPresenti = cavalieri.get_children()
-	for i in range(len(cavalieriPresenti)):
-		if is_instance_valid(cavalieriPresenti[i]):
-			if input.text == str(cavalieriPresenti[i].risultato) && !cavalieriPresenti[i].indovinato:
-				arcoSparo(cavalieriPresenti[i].global_position)
-				await get_tree().create_timer(0.25).timeout
-				if is_instance_valid(cavalieriPresenti[i]):
-					if input.text == str(cavalieriPresenti[i].risultato) && !cavalieriPresenti[i].indovinato:
-						$"../Input".resetInput()
-						istanziaProiettile(cavalieriPresenti[i])
-						cavalieriPresenti[i].indovinato =  true
-						cavalieriPresenti[i].velocità = cavalieriPresenti[i].velocità / 2
-						if !bersaglio_sprite.is_playing():
-							bersaglio_sprite.play("default")
-							freccia.visible = false
-							await bersaglio_sprite.animation_finished
-							$loading.play()
-							freccia.visible = true
-
-				
-
-			
-			
-
-#!!DEBUG!!
+var _kill_in_progress: bool = false
 var cavalieriDistrutti = 0
 
-#crea il proiettile e gli da i valori
+func _process(_delta: float) -> void:
+	if _kill_in_progress:
+		return
+	var cavalieriPresenti = cavalieri.get_children()
+	for cavaliere in cavalieriPresenti:
+		if is_instance_valid(cavaliere) and not cavaliere.indovinato:
+			if input.text == str(cavaliere.risultato):
+				_kill_in_progress = true
+				_esegui_kill(cavaliere)
+				return
+
+func _esegui_kill(cavaliere: CharacterBody2D) -> void:
+	arcoSparo(cavaliere.global_position)
+	await get_tree().create_timer(0.25).timeout
+	if is_instance_valid(cavaliere) and not cavaliere.indovinato:
+		if input.text == str(cavaliere.risultato):
+			$"../Input".resetInput()
+			istanziaProiettile(cavaliere)
+			cavaliere.indovinato = true
+			cavaliere.velocità = cavaliere.velocità / 2
+			if not bersaglio_sprite.is_playing():
+				bersaglio_sprite.play("default")
+				freccia.visible = false
+				await bersaglio_sprite.animation_finished
+				$loading.play()
+				freccia.visible = true
+	_kill_in_progress = false
+
 func istanziaProiettile(nemico: CharacterBody2D):
 	$sparo.play()
-	print("colpo istanziato")
 	var colpoINST = colpo.instantiate()
 	colpoINST.position = %Bersaglio.position
 	colpoINST.direzione = nemico.position
 	colpoINST.bersaglio = nemico
 	add_child(colpoINST)
-		
-		
-	#!!RIMUOVERE DOPO DEBUG!!
 	cavalieriDistrutti += 1
 	get_parent().get_parent().get_parent().addPunti(10)
-	#$"../Punteggio".text = "Punteggio: "+str(cavalieriDistrutti)
 
 func arcoSparo(bersaglio: Vector2):
 	bersaglio_sprite.look_at(bersaglio)
 	bersaglio_sprite.rotation += deg_to_rad(90)
 	freccia.look_at(bersaglio)
 	freccia.rotation += deg_to_rad(45)
-	

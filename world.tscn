@@ -1,6 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://bymg13fg84fvy"]
+[gd_scene format=3 uid="uid://bymg13fg84fvy"]
 
-[ext_resource type="Script" path="res://world.gd" id="1_y57qh"]
+[ext_resource type="Script" uid="uid://8fmsiw1rp0et" path="res://world.gd" id="1_y57qh"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_71sqo"]
 bg_color = Color(0.25069, 0.417258, 0.537421, 1)
@@ -10,20 +10,20 @@ corner_radius_bottom_right = 15
 corner_radius_bottom_left = 15
 anti_aliasing_size = 4.915
 
-[node name="World" type="Node2D"]
+[node name="World" type="Node2D" unique_id=694192102]
 script = ExtResource("1_y57qh")
 
-[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
-_spawnable_scenes = PackedStringArray("res://player.tscn", "res://proiettile.tscn", "res://enemy.tscn", "res://boss.tscn")
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="." unique_id=299329094]
+_spawnable_scenes = PackedStringArray("uid://nae1375nhcnl", "uid://cfotjdbppsy0i", "uid://j66fnndftg86", "uid://53nhs3c7gbc8")
 spawn_path = NodePath("..")
 
-[node name="Timer" type="Timer" parent="."]
+[node name="Timer" type="Timer" parent="." unique_id=395098944]
 
-[node name="Timer2" type="Timer" parent="."]
+[node name="Timer2" type="Timer" parent="." unique_id=650616896]
 
-[node name="HTTPRequest" type="HTTPRequest" parent="."]
+[node name="HTTPRequest" type="HTTPRequest" parent="." unique_id=1668198968]
 
-[node name="Label" type="Label" parent="."]
+[node name="Label" type="Label" parent="." unique_id=88944589]
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
@@ -37,17 +37,17 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_71sqo")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="LevelContainer" type="Node2D" parent="."]
+[node name="LevelContainer" type="Node2D" parent="." unique_id=1056829976]
 
-[node name="MenuContainer" type="Node2D" parent="."]
+[node name="MenuContainer" type="Node2D" parent="." unique_id=305851252]
 
-[node name="Punteggio" type="Label" parent="."]
+[node name="Punteggio" type="Label" parent="." unique_id=321000054]
 offset_left = 831.0
 offset_top = 30.0
 offset_right = 1143.0
 offset_bottom = 75.0
 
-[node name="Vita" type="Label" parent="."]
+[node name="Vita" type="Label" parent="." unique_id=24418994]
 offset_left = 815.0
 offset_top = 78.0
 offset_right = 1077.0

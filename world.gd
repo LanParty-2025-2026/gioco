@@ -25,6 +25,7 @@ var username
 var classe
 
 var playerPronti = 0
+var gioco_iniziato = false
 
 var listaPersonaggi = [1,2,3,4]
 
@@ -104,6 +105,9 @@ func scegliArma():
 
 
 func spawna_client(id) -> void:
+	if gioco_iniziato or ciao >= n_players:
+		multiplayer.multiplayer_peer.disconnect_peer(id)
+		return
 	# Spawna un player con un ID univoco
 	var new_player = player.instantiate()
 	new_player.name = str(id)
@@ -156,8 +160,13 @@ func aggiorna_contatore(contatore) -> void:
 func aggiorna_timer_client(tempo_rimasto: int) -> void:
 	# Mostra il tempo rimanente a schermo nei client
 	$Label.set_text(str(tempo_rimasto))
-func _process(_delta: float) -> void:
-	if timer.is_stopped() == false:
+var _timer_rpc_acc: float = 0.0
+func _process(delta: float) -> void:
+	if timer.is_stopped():
+		return
+	_timer_rpc_acc += delta
+	if _timer_rpc_acc >= 1.0:
+		_timer_rpc_acc = 0.0
 		var tempo_rimasto = int(timer.get_time_left())
 		rpc("aggiorna_timer_client", tempo_rimasto)
 
@@ -216,16 +225,18 @@ func cambiaArma(arma):
 @rpc("any_peer")
 func aggiornaContatore():
 	playerPronti = playerPronti +1
+	if gioco_iniziato:
+		return
 	if (playerPronti >= n_players):
+		gioco_iniziato = true
 		for i in range(1, 2):
 			print("ciao" + str(i))
-			timer.wait_time = 10#5.0  # Durata del livello in secondi
+			timer.wait_time = 5.0
 			timer.one_shot = false
 			timer.start()
 			await timer.timeout
 			rpc("start" , "res://Levels/Combattimento1/world/world.tscn")
-			timer.wait_time = 10#45.0  # Durata del livello in secondi
-			  # Durata del livello in secondi
+			timer.wait_time = 60.0  # Combattimento 1 (4 nemici)
 			timer.one_shot = false
 			timer.start()
 			arena = true
@@ -237,28 +248,28 @@ func aggiornaContatore():
 			arena = false
 			for child in get_tree().get_nodes_in_group("enemyes"):
 				child.queue_free()
-				
+
 			rpc("nascondi_player_locale")
-			
+
 			rpc("start" , "res://intermezzo.tscn")
-			timer.wait_time = 10#6
+			timer.wait_time = 6.0
 			timer.one_shot = false
 			timer.start()
-			await timer.timeout	
+			await timer.timeout
 			rpc("start" , "res://Levels/Livello1/world/world.tscn")
-			timer.wait_time = 10#120.0  # Durata del livello in secondi
+			timer.wait_time = 150.0  # Livello 1 - matematica
 			timer.one_shot = false
 			timer.start()
-			await timer.timeout	
+			await timer.timeout
 			rpc("start" , "res://intermezzo.tscn")
-			timer.wait_time = 10#6
+			timer.wait_time = 6.0
 			timer.one_shot = false
 			timer.start()
-			await timer.timeout	
+			await timer.timeout
 			rpc("mostra_player_locale")
 			rev()
 			rpc("start" , "res://Levels/Combattimento1/world/world.tscn")
-			timer.wait_time = 10.0  # Durata del livello in secondi
+			timer.wait_time = 60.0  # Combattimento 2 (5 nemici)
 			timer.one_shot = false
 			timer.start()
 			arena = true
@@ -271,29 +282,27 @@ func aggiornaContatore():
 			arena = false
 			for child in get_tree().get_nodes_in_group("enemyes"):
 				child.queue_free()
-				
+
 			rpc("nascondi_player_locale")
 			rpc("start" , "res://intermezzo.tscn")
-			timer.wait_time = 10#6
+			timer.wait_time = 6.0
 			timer.one_shot = false
 			timer.start()
-			await timer.timeout	
+			await timer.timeout
 			rpc("start" , "res://LivelloChimica/scene/minigiochi.tscn")
-			
-			timer.wait_time = 10.0  # Durata del livello in secondi
+			timer.wait_time = 150.0  # Livello Chimica
 			timer.one_shot = false
 			timer.start()
-			await timer.timeout	
-			#rpc("start" , "res://Levels/LivelloChimica/scene/minigiochi.tscn")
+			await timer.timeout
 			rpc("start" , "res://intermezzo.tscn")
-			timer.wait_time = 10#6
+			timer.wait_time = 6.0
 			timer.one_shot = false
 			timer.start()
-			await timer.timeout	
+			await timer.timeout
 			rpc("mostra_player_locale")
 			rev()
 			rpc("start" , "res://Levels/Combattimento1/world/world.tscn")
-			timer.wait_time = 10.0  # Durata del livello in secondi
+			timer.wait_time = 60.0  # Combattimento 3 (6 nemici)
 			timer.one_shot = false
 			timer.start()
 			arena = true
@@ -307,68 +316,43 @@ func aggiornaContatore():
 			arena = false
 			for child in get_tree().get_nodes_in_group("enemyes"):
 				child.queue_free()
-				
-			
+
 			rpc("nascondi_player_locale")
 			rpc("start" , "res://intermezzo.tscn")
-			timer.wait_time = 10#6
+			timer.wait_time = 6.0
 			timer.one_shot = false
 			timer.start()
-			await timer.timeout	
+			await timer.timeout
+			rpc("start" , "res://Levels/Livello3/main.tscn")
+			timer.wait_time = 120.0  # Livello 3 - Quiz UE
+			timer.one_shot = false
+			timer.start()
+			await timer.timeout
+			rpc("start" , "res://intermezzo.tscn")
+			timer.wait_time = 6.0
+			timer.one_shot = false
+			timer.start()
+			await timer.timeout
 			rpc("start" , "res://Levels/Livello2/World/world.tscn")
-			timer.wait_time = 10#150.0  # Durata del livello in secondi
+			timer.wait_time = 150.0  # Livello 2 - battaglie torri
 			timer.one_shot = false
 			timer.start()
-			await timer.timeout	
-			
+			await timer.timeout
+
 			rpc("nuclearizzaTorri")
 			rpc("start" , "res://intermezzo.tscn")
-			timer.wait_time = 10#6
+			timer.wait_time = 6.0
 			timer.one_shot = false
 			timer.start()
-			await timer.timeout	
-			#rpc("mostra_player_locale")
-			#rev()
-			#rpc("start" , "res://Levels/Combattimento1/world/world.tscn")
-			#timer.wait_time = 45.0  # Durata del livello in secondi
-			#timer.one_shot = false
-			#timer.start()
-			#arena = true
-			#spawnaEnemy()
-			#spawnaEnemy()
-			#spawnaEnemy()
-			#spawnaEnemy()
-			#spawnaEnemy()
-			#spawnaEnemy()
-			#spawnaEnemy()
-			#await timer.timeout
-			#arena = false
-			#for child in get_tree().get_nodes_in_group("enemyes"):
-			#	child.queue_free()
-			
-			#rpc("nascondi_player_locale")
-			#rpc("start" , "res://intermezzo.tscn")
-			#timer.wait_time = 5#6
-			#timer.one_shot = false
-			#timer.start()
-			#await timer.timeout	
-			#rpc("start" , "res://Levels/Livello3/main.tscn")
-			#timer.wait_time = 60.0  # Durata del livello in secondi
-			#timer.one_shot = false
-			#timer.start()
-			#await timer.timeout
-			#rpc("start" , "res://intermezzo.tscn")
-			#timer.wait_time = 6
-			#timer.one_shot = false
-			#timer.start()
-			#await timer.timeout	
+			await timer.timeout
 			rpc("mostra_player_locale")
 			rev()
 			rpc("start" , "res://Levels/Combattimento1/world/world.tscn")
-			timer.wait_time = 10#50.0  # Durata del livello in secondi
+			timer.wait_time = 90.0  # Boss finale
 			timer.one_shot = true
 			timer.start()
 			arena = true
+			await get_tree().create_timer(8.0).timeout
 			spawnaBoss()
 			await timer.timeout
 			boss.queue_free()

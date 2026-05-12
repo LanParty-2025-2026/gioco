@@ -214,15 +214,11 @@ func damage(area: Area2D):
 	$Timer.start()
 	animation.play(\"damage\"+personaggio)
 	var knock = (global_position - area.global_position).normalized()
-	#velocity = knock * 100
-	
+	var final_pos = position + knock
+	final_pos.x = clamp(final_pos.x, 10, 1190)
+	final_pos.y = clamp(final_pos.y, 10, 638)
 	var tween = get_tree().create_tween()
-	if position.x + knock.x < 10 or position.x + knock.x  > 1190:
-		knock.x = 0
-	if  position.y + knock.y < 10 or position.y + knock.y > 638:
-		knock.y = 0
-		
-	tween.tween_property(self, \"position\", position + knock, 0.1)
+	tween.tween_property(self, \"position\", final_pos, 0.1)
 	move_and_slide()
 
 
@@ -236,13 +232,11 @@ func damage2(pos):
 		$Timer.start()
 		animation.play(\"damage\"+personaggio)
 		var knock = (global_position - pos).normalized()
-		#velocity = knock * 100
-		if position.x + knock.x < 200 or position.x + knock.x  > 1000:
-			knock.x = 0
-		if  position.y + knock.y < 100 or position.y + knock.y > 548:
-			knock.y = 0
+		var final_pos = position + knock * 100
+		final_pos.x = clamp(final_pos.x, 200, 1000)
+		final_pos.y = clamp(final_pos.y, 100, 548)
 		var tween = get_tree().create_tween()
-		tween.tween_property(self, \"position\", position + knock*100, 0.1)
+		tween.tween_property(self, \"position\", final_pos, 0.1)
 		move_and_slide()
 	else:
 		dead = true
