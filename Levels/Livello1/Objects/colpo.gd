@@ -19,6 +19,6 @@ func distruzione():
 	queue_free()
 
 func _on_radar_body_entered(body: Node2D) -> void:
-	if body == bersaglio:
+	if is_instance_valid(bersaglio) and body == bersaglio:
 		body.distruggiCavaliere()
 		distruzione()

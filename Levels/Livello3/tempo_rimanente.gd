@@ -10,6 +10,7 @@ signal tempo_finito
 func _on_timer_timeout() -> void:
 	tempo_rimanente.value += 0.15
 	if value >= 100:
+		tempo_rimanente.value = 0
 		tempo_finito.emit()
 		checkrisposte.risposta_giusta(false)
 func resetta_tempo():
